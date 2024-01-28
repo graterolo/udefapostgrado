@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'cedula',
+        'tipo',
         'email',
         'password',
     ];
@@ -42,4 +44,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function alumno_censo()
+    {
+        return $this->belongsTo(alumno_censo::class);
+    }
+    public function alumno()
+    {
+        return $this->hasOne(Alumno::class);
+    }
 }

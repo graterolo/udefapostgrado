@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\censo_master;
+use App\Models\Docente;
 use Illuminate\Http\Request;
 
-class CensoMasterController extends Controller
+class DocenteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class CensoMasterController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(censo_master $censo_master)
+    public function show(Docente $docente)
     {
         //
     }
@@ -42,7 +42,7 @@ class CensoMasterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(censo_master $censo_master)
+    public function edit(Docente $docente)
     {
         //
     }
@@ -50,7 +50,7 @@ class CensoMasterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, censo_master $censo_master)
+    public function update(Request $request, Docente $docente)
     {
         //
     }
@@ -58,7 +58,7 @@ class CensoMasterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(censo_master $censo_master)
+    public function destroy(Docente $docente)
     {
         //
     }

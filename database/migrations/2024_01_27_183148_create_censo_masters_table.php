@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('censo_masters', function (Blueprint $table) {
             $table->id();
+            $table->string('cedula', 15);
+            $table->foreignId('master_id')->constrained('masters')->cascadeOnDelete('restrict');
+            $table->date('fecha');
+            $table->tinyInteger('validado')->default(0);
             $table->timestamps();
+
+            
         });
     }
 

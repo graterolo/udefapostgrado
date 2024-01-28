@@ -13,6 +13,22 @@
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
+            <div>
+                <InputLabel for="cedula" value="Cedula" />
+                <TextInput id="cedula" type="text" class="mt-1 block w-full" v-model="form.cedula" required autocomplete="cedula" />
+                <!-- <InputError class="mt-2" :message="form.errors.cedula" /> -->
+                <div v-if="errors.cedula" class="text-sm text-red-600">{{ errors.cedula }}</div>
+            </div>
+
+            <div class="mt-3">
+                <InputLabel for="tipo" value="tipo" />
+                <select id="tipo" class="mt-1 block w-full" v-model="form.tipo" required>
+                    <option value="0">Alumno</option>
+                    <option value="1">Docente</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.tipo" />
+            </div>
+            
             <div class="mt-3">
                 <InputLabel for="email" value="Email" />
                 <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
@@ -30,14 +46,14 @@
                 <TextInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
-
+            
             <div class="mt-4 flex flex-col items-end">
                 <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Registrarte
                 </PrimaryButton>
 
                 <Link :href="route('login')" class="mt-4 text-sm text-gray-600 underline hover:text-gray-900">
-                    Already registered?
+                    Ya registrado?
                 </Link>
             </div>
         </form>
@@ -55,10 +71,15 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     name: '',
+    cedula: '',
+    tipo: '',
     email: '',
     password: '',
     password_confirmation: '',
     terms: false,
+});
+const props = defineProps({
+  errors: { type: Object }
 });
 
 const submit = () => {

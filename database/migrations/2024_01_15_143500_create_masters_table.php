@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('masters', function (Blueprint $table) {
             $table->id();
+            $table->string('siglas', 4);
+            $table->string('nombre', 100);
+            $table->tinyInteger('activo')->default(0);
             $table->timestamps();
         });
     }
