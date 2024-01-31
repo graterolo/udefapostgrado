@@ -26,8 +26,9 @@ defineProps({
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen  bg-center bg-gray-50   selection:bg-red-500 selection:text-white"
     >
     <div class="sm:fixed sm:top-0 sm:left-0 p-6 ">
-        <img class = "limg" src="/images/logo_udefa_transp.png"  alt="">
-            </div>
+        <!-- <img class = "limg" src="/images/logo_udefa_transp.png"  alt=""> -->
+        <img class = "limg" src="/images/logop.jpg"  alt="">
+    </div>
         <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-end">
             <Link
                 v-if="$page.props.auth.user"
@@ -65,15 +66,15 @@ defineProps({
 
                             <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Sistema de Gestión de Postgrado</h2>
 
-                            <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                Bienvenido al area de Postgrado de la Universidad de Falcón.
+                            <p class="mt-4 text-gray-500 dark:text-gray-500 text-md leading-relaxed">
+                                Bienvenido al área de Postgrado de la Universidad de Falcón.
                             </p>
-                            <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                En este sistema usted podrá gestionar todo lo referente al área de postgrado como:
-                                <ol class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                            <p class="mt-4 text-gray-500 dark:text-gray-500 text-md leading-relaxed">
+                                En este sistema usted podrá visualizar y gestionar todas las solicitudes referentes a sus estudios de postgrado como:
+                                <ol class="mt-4 text-gray-500 dark:text-gray-500 text-md leading-relaxed">
                                     <li>Preinscripción</li>
                                     <li>Inscripción</li>
-                                    <li>Notas</li>
+                                    <li>Calificaciones</li>
                                 </ol>
                                 
                             </p>

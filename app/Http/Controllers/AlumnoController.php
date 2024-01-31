@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AlumnoController extends Controller
 {
@@ -12,7 +14,9 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Alumnos/Index', [
+            'alumnos' => Alumno::paginate()
+        ]);
     }
 
     /**
@@ -36,7 +40,18 @@ class AlumnoController extends Controller
      */
     public function show(Alumno $alumno)
     {
-        //
+        return Inertia::render('Alumnos/Show', ['alumno' => $alumno ]);
+    }
+
+    public function me(Request $request): Response
+    {
+        $id = $request->user()->id;
+   
+        $alumno = Alumno::where('user_id', '=', $id)->first();
+       
+        return Inertia::render('Alumnos/Show', [
+            'alumno' => $alumno ]);
+
     }
 
     /**
@@ -44,7 +59,7 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        //
+        return Inertia::render('Alumnos/Edit', [ 'alumno' => $alumno]);
     }
 
     /**

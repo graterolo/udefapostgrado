@@ -23,10 +23,10 @@
                               d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
                     </svg>
                 </template>
-                Dashboard
+                Cartelera
             </nav-link>
 
-            <nav-link :href="route('users.index')" :active="route().current('users.index')">
+            <nav-link v-if="$page.props.auth.user.tipo === 2" :href="route('users.index')" :active="route().current('users.index')">
                 <template #icon>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                          xmlns="http://www.w3.org/2000/svg">
@@ -34,26 +34,35 @@
                               d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                 </template>
-                Users
+                Usuarios
             </nav-link>
 
-            <nav-link :href="route('about')" :active="route().current('about')">
+            <nav-link v-if="$page.props.auth.user.tipo === 2" :href="route('docentes.index')" :active="route().current('docentes.index')">
                 <template #icon>
-                    <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                         stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                     </svg>
                 </template>
-                About us
+                Docentes
+            </nav-link>
+            
+            <nav-link v-if="$page.props.auth.user.tipo === 2" :href="route('alumnos.index')" :active="route().current('alumnos.index')">
+                <template #icon>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </template>
+                Alumnos
             </nav-link>
 
-            <a class="flex items-center mt-4 py-2 px-6 text-gray-100" href="#" @click="showingTwoLevelMenu = !showingTwoLevelMenu">
+            <a v-if="$page.props.auth.user.tipo === 0" class="flex items-center mt-4 py-2 px-6 text-gray-100" href="#" @click="showingTwoLevelMenu = !showingTwoLevelMenu">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"></path>
                 </svg>
-                <span class="mx-3">Two-level menu</span>
+                <span class="mx-3">Alumno</span>
             </a>
             <transition
                 enter-to-class="transition-all duration-300 ease-in-out"
@@ -64,7 +73,16 @@
                     <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner"
                         aria-label="submenu">
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('dashboard')">Child menu</Link>
+                            <Link class="w-full" :href="route('alumnos.me', $page.props.auth.user.id)"> Datos Personales</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('dashboard')">Preinscripción</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('dashboard')">Inscripción</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('dashboard')">Calificaciones</Link>
                         </li>
                     </ul>
                 </div>

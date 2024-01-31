@@ -3,10 +3,10 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Users
+            Usuarios
         </template>
 
-        <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
+        <!-- <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
             <div class="flex w-12 items-center justify-center bg-blue-500">
                 <svg class="h-6 w-6 fill-current text-white" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -20,27 +20,47 @@
                     <p class="text-sm text-gray-600">Sample table page</p>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
+                    <Link :href="route('users.create')" 
+                        class="px-1 py-1 bg-indigo-500 text-white border rounded-md "
+                        >Nuevo</Link
+                    >            
+                </div>  
         
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
                     <tr class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Name
+                            #
+                        </th>
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                            Nombre
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Email
                         </th>
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"></th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="user in users.data" :key="user.id" class="text-gray-700">
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">{{ user.id }}</p>
+                        </td>
+                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.name }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.email }}</p>
+                        </td>
+                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                            <Link :href="route('users.show', user.id)" 
+                                    class="px-4 py-2 bg-amber-400 text-white border rounded-md"
+                                    >Mostrar</Link
+                                > 
                         </td>
                     </tr>
                 </tbody>
@@ -56,7 +76,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     users: Object

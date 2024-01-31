@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('docentes', function (Blueprint $table) {
             $table->id();
             $table->string('cedula', 15)->unique();
-            $table->string('nombre', 20);
+            $table->string('nombre', 50);
             $table->tinyInteger('sexo');
             $table->string('direc_hab')->nullable();
-            $table->string('edo_hab', 20)->nullable();            
-            $table->string('ciud_hab', 20)->nullable();
-            $table->string('telefono', 20)->nullable();
-            $table->string('celular', 20)->nullable();
+            $table->string('edo_hab', 30)->nullable();            
+            $table->string('ciud_hab', 30)->nullable();
+            $table->string('telefono', 25)->nullable();
+            $table->string('celular', 25)->nullable();
             $table->timestamps();
         });
     }
