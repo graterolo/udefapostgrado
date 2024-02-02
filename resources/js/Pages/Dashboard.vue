@@ -3,12 +3,12 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Dashboard
+            Cartelera
         </template>
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
-                You're logged in!
+                Bienvenido al Sistema de Postgrado de la Universidad de Falcón
             </div>
         </div>
     </AuthenticatedLayout>

@@ -37,11 +37,14 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'flash' => function () use ($request) {
-                return [
-                    'success' => $request->session()->get('success'),
-                ];
-            },
+            // 'flash' => function () use ($request) {
+            //     return [
+            //         'success' => $request->session()->get('success'),
+            //     ];
+            // },
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+            ],
             'showingMobileMenu' => false,
         ]);
     }

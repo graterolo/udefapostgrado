@@ -21,11 +21,11 @@ return new class extends Migration
             $table->date('fecha_nac');
             $table->tinyInteger('sexo');
             $table->string('direc_hab');
-            $table->string('edo_hab', 20);            
-            $table->string('ciud_hab', 20);
-            $table->string('telefono', 20);
-            $table->string('celular', 20)->nullable();
-            $table->string('titulo', 30);
+            $table->string('edo_hab', 30);            
+            $table->string('ciud_hab', 30);
+            $table->string('telefono', 30);
+            $table->string('celular', 25)->nullable();
+            $table->string('titulo', 50);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

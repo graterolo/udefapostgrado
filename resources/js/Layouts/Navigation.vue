@@ -57,6 +57,16 @@
                 Alumnos
             </nav-link>
 
+            <nav-link v-if="$page.props.auth.user.tipo === 2" :href="route('preinscritos.index')" :active="route().current('preinscritos.index')">
+                <template #icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                    </svg>
+
+                </template>
+                Preinscritos
+            </nav-link>
+
             <a v-if="$page.props.auth.user.tipo === 0" class="flex items-center mt-4 py-2 px-6 text-gray-100" href="#" @click="showingTwoLevelMenu = !showingTwoLevelMenu">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -69,17 +79,42 @@
                 enter-from-class="max-h-0 opacity-25"
                 leave-from-class="opacity-100 max-h-xl"
                 leave-to-class="max-h-0 opacity-0">
-                <div v-show="showingTwoLevelMenu">
+                 <div v-show="showingTwoLevelMenu"> <!--'alumnos.me', $page.props.auth.user.id -->
                     <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner"
                         aria-label="submenu">
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('alumnos.me', $page.props.auth.user.id)"> Datos Personales</Link>
+                            <Link class="w-full" :href="route('alumnos.index')"> Datos Personales</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('dashboard')">Preinscripción</Link>
+                            <Link class="w-full" :href="route('preinscritos.index')">Preinscripción</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('dashboard')">Inscripción</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('dashboard')">Calificaciones</Link>
+                        </li>
+                    </ul>
+                </div>
+            </transition>
+
+            <a v-if="$page.props.auth.user.tipo === 1" class="flex items-center mt-4 py-2 px-6 text-gray-100" href="#" @click="showingTwoLevelMenu2 = !showingTwoLevelMenu2">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"></path>
+                </svg>
+                <span class="mx-3">Docente</span>
+            </a>
+            <transition
+                enter-to-class="transition-all duration-300 ease-in-out"
+                enter-from-class="max-h-0 opacity-25"
+                leave-from-class="opacity-100 max-h-xl"
+                leave-to-class="max-h-0 opacity-0">
+                 <div v-show="showingTwoLevelMenu2"> 
+                    <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner"
+                        aria-label="submenu">
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('docentes.index')"> Datos Personales</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('dashboard')">Calificaciones</Link>
@@ -105,9 +140,10 @@ export default {
 
     setup() {
         let showingTwoLevelMenu = ref(false)
+        let showingTwoLevelMenu2 = ref(false)
 
         return {
-            showingTwoLevelMenu
+            showingTwoLevelMenu, showingTwoLevelMenu2
         }
     },
 }

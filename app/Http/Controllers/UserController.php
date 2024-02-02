@@ -35,15 +35,26 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {   //dd($request);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'cedula' => 'required',
-            'tipo' => 'required',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],            
-        ], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
-        ]);
-           
+
+        if($request->tipo==1) {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'cedula' => 'required|exists:docentes,cedula',
+                'tipo' => 'required',
+                'email' => 'required|string|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],            
+            ], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+            ]);
+        } elseif($request->tipo==2) {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'cedula' => 'required',
+                'tipo' => 'required',
+                'email' => 'required|string|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],            
+            ], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+            ]);
+        }           
         $user = User::create([
             'name' => $request->name,
             'cedula' => $request->cedula,

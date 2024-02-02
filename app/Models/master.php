@@ -9,4 +9,9 @@ class master extends Model
 {
     use HasFactory;
     protected $fillable = ['siglas', 'nombre', 'activo'];
+
+    public function preinscrito()
+    {
+        return $this->hasMany(Preinscrito::class);
+    }
 }

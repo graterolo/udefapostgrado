@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\alumno_censo;
 use App\Models\Alumno;
+use App\Models\censo_master;
+use App\Models\Preinscrito;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,9 +22,7 @@ use DB;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
+   
     public function create(): Response
     {
         return Inertia::render('Auth/Register');
@@ -35,26 +35,46 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'cedula' => 'required|exists:alumno_censos,cedula|exists:censo_masters,cedula,validado,1',
-            'tipo' => 'required',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ], ['cedula.exists' => 'Ups Usted no se ha censado o no ha pagado la preinscripción, no puede registrarse',]);
+        if($request->tipo==1) {
+            $request->validate([
+                'name' => 'required|string|max:100',
+                'cedula' => 'required|exists:docentes,cedula|unique:'.User::class,
+                'tipo' => 'required',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ], ['cedula.exists' => 'Usted no ha sido registrado como docente, notifiquelo ha su contacto, no puede registrarse']);
+    
+            $user = User::create([
+                'name' => $request->name,
+                'cedula' => $request->cedula,
+                'tipo' => $request->tipo,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            event(new Registered($user));
 
-        $user = User::create([
-            'name' => $request->name,
-            'cedula' => $request->cedula,
-            'tipo' => $request->tipo,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        
+        } elseif($request->tipo==0) {  
+            $request->validate([
+                'name' => 'required|string|max:100',
+                'cedula' => 'required|exists:alumno_censos,cedula|exists:censo_masters,cedula,validado,1',
+                'tipo' => 'required',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ], [
+                'cedula.unique' => 'Esta cédula ya se encuentra registrada.',
+                'cedula.exists' => 'Ups Usted no se ha censado o no ha pagado la preinscripción, no puede registrarse',
+            ]);
 
-        event(new Registered($user));
+            $user = User::create([
+                'name' => $request->name,
+                'cedula' => $request->cedula,
+                'tipo' => $request->tipo,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);       
 
-        if($request->tipo==0) {  
+            event(new Registered($user));
+       
             $cedula = $request->cedula;
             $alumno_censos = alumno_censo::select('alumno_censos.nombre1', 'alumno_censos.nombre2', 'alumno_censos.apellido1', 'alumno_censos.apellido2',
             'fecha_nac', 'alumno_censos.sexo', 'alumno_censos.direc_hab', 'alumno_censos.edo_hab', 'alumno_censos.ciud_hab', 'alumno_censos.telefono', 
@@ -77,6 +97,19 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id, 
             ]);
             $alumno->save();
+
+            $censo_masters = censo_master::select('censo_masters.cedula', 'censo_masters.master_id', 'censo_masters.validado' )
+                ->where('censo_masters.cedula', '=', $cedula)
+                ->where('censo_masters.validado', '=', 1)
+                ->orderBy('censo_masters.id','DESC')
+                ->first();
+
+            $preinscrito = Preinscrito::create([
+                'cedula' => $request->cedula,
+                'master_id' => $censo_masters->master_id,
+                'user_id' => $user->id,
+            ]);
+            $preinscrito->save();
         }
 
         Auth::login($user);
