@@ -1,0 +1,1 @@
+import{o as t,c as s,t as o}from"./app-HJYsxKsD.js";const c={class:"value"},p={__name:"LabelFecha",props:["value"],setup(e){const a=e;return(n,r)=>(t(),s("span",c,o(new Intl.DateTimeFormat("es").format(a.value)),1))}};export{p as _};
