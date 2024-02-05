@@ -1,1 +1,0 @@
-import{o as s,c as t,d as o,p as a}from"./app-HJYsxKsD.js";const r={class:"flex h-screen items-center justify-center bg-gray-200 px-6"},c={class:"w-full max-w-sm rounded-md bg-white p-6 shadow-md"},l={__name:"GuestLayout",setup(n){return(e,d)=>(s(),t("div",r,[o("div",c,[a(e.$slots,"default")])]))}};export{l as _};

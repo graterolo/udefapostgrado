@@ -7,10 +7,10 @@
         </template>
         <div class="overflow-hidden shadow-sm sm:rounded-lg flex flex-row space-x-2 mb-2 justify-end">      
 
-                 <!-- <Link :href="route('preinscritos.edit', preinscrito.id)" 
+                  <Link v-if="$page.props.auth.user.tipo === 2" :href="route('preinscritos.edit', preinscrito.id)" 
                     class="inline-flex items-right px-4 py-2 gap-0.5 bg-amber-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-amber-500 active:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition ease-in-out duration-150"
                     >Editar</Link
-                >  -->
+                >  
 
                 <Link v-if="$page.props.auth.user.tipo === 2" :href="route('preinscritos.index')" 
                     class="inline-flex items-right px-4 py-2 gap-0.5 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
