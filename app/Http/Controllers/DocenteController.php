@@ -36,12 +36,7 @@ class DocenteController extends Controller
         $request->validate([
             'cedula' => 'required|string|max:15',
             'nombre' => 'required|string|max:50',
-            'sexo' => 'required',
-            'direc_hab' => 'required|string|max:255',
-            'edo_hab' => 'required|string|max:30',  
-            'ciud_hab' => 'required|string|max:30',
-            'telefono' => 'required|string|max:25',
-            'celular' => 'required|string|max:25',         
+            'sexo' => 'required',   
         ]);
            
         $docente = Docente::create([

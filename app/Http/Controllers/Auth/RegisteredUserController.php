@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\alumno_censo;
+use App\Models\AlumnoCenso;
 use App\Models\Alumno;
-use App\Models\censo_master;
+use App\Models\CensoMaster;
 use App\Models\Preinscrito;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -76,7 +76,7 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
        
             $cedula = $request->cedula;
-            $alumno_censos = alumno_censo::select('alumno_censos.nombre1', 'alumno_censos.nombre2', 'alumno_censos.apellido1', 'alumno_censos.apellido2',
+            $alumno_censos = AlumnoCenso::select('alumno_censos.nombre1', 'alumno_censos.nombre2', 'alumno_censos.apellido1', 'alumno_censos.apellido2',
             'fecha_nac', 'alumno_censos.sexo', 'alumno_censos.direc_hab', 'alumno_censos.edo_hab', 'alumno_censos.ciud_hab', 'alumno_censos.telefono', 
             'alumno_censos.celular', 'alumno_censos.titulo' )->where('alumno_censos.cedula', '=', $cedula)->first();
             
@@ -98,7 +98,7 @@ class RegisteredUserController extends Controller
             ]);
             $alumno->save();
 
-            $censo_masters = censo_master::select('censo_masters.cedula', 'censo_masters.master_id', 'censo_masters.validado' )
+            $censo_masters = CensoMaster::select('censo_masters.cedula', 'censo_masters.master_id', 'censo_masters.validado' )
                 ->where('censo_masters.cedula', '=', $cedula)
                 ->where('censo_masters.validado', '=', 1)
                 ->orderBy('censo_masters.id','DESC')

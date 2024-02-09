@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Preinscrito;
-use App\Models\master;
-//use App\Models\Alumno;
+use App\Models\Master;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-//use DB;
+
 
 class PreinscritoController extends Controller
 {
@@ -67,22 +66,10 @@ class PreinscritoController extends Controller
 
     public function edit(Preinscrito $preinscrito)
     {
-    //     $mid = $preinscrito->master_id;
-    //     $master = Master::find($mid);
-    //     $ced = $preinscrito->cedula;
-    //     $alumno = Alumno::find('cedula', $ced);
-
-    //    return Inertia::render('Preinscritos/Edit', [
-    //        'preinscrito' => $preinscrito
-           // 'master' => $master,
-           // 'alumno' => $alumno,
-    // ]);
-
-    $masters = master::all();
-    return Inertia::render('Preinscritos/Edit', ['preinscrito' => $preinscrito,
-    'masters' => $masters
-    ]);
-       // return Inertia::render('Preinscritos/Edit', ['preinscrito' => $preinscrito ]);
+       $masters = Master::all();
+       return Inertia::render('Preinscritos/Edit', ['preinscrito' => $preinscrito,
+       'masters' => $masters
+       ]);
     }
 
     public function update(Request $request, Preinscrito $preinscrito)

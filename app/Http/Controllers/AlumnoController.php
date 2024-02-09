@@ -41,17 +41,6 @@ class AlumnoController extends Controller
          
     }
 
-    // public function me(Request $request): Response
-    // {
-    //     $id = $request->user()->id;
-   
-    //     $alumno = Alumno::where('user_id', '=', $id)->first();
-       
-    //     return Inertia::render('Alumnos/Showme', [
-    //         'alumno' => $alumno ]);
-
-    // }
-
     public function edit(Alumno $alumno)
     {
         return Inertia::render('Alumnos/Edit', [ 'alumno' => $alumno]);

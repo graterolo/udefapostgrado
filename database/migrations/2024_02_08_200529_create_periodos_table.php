@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('masters', function (Blueprint $table) {
+        Schema::create('periodos', function (Blueprint $table) {
             $table->id();
-            $table->string('siglas', 4)->unique();
-            $table->string('nombre', 100);
-            $table->tinyInteger('activo')->default(0);
+            $table->string('nperiodo', 6)->unique();
+            $table->date('fecha_ini');
+            $table->date('fecha_fin'); 
+            $table->tinyInteger('activo')->default(0);           
             $table->timestamps();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
         });
     }
 
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('masters');
+        Schema::dropIfExists('periodos');
     }
 };

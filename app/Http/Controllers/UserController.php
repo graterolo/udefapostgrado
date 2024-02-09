@@ -14,12 +14,6 @@ use Inertia\Response;
 
 class UserController extends Controller
 {
-    // public function index()
-    // {
-    //     return Inertia::render('Users/Index', [
-    //         'users' => User::paginate()
-    //     ]);
-    // }
     public function index()
     {   
         return Inertia::render('Users/Index', [

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class master extends Model
+class Master extends Model
 {
     use HasFactory;
     protected $fillable = ['siglas', 'nombre', 'activo'];
@@ -13,5 +13,9 @@ class master extends Model
     public function preinscrito()
     {
         return $this->hasMany(Preinscrito::class);
+    }
+    public function plans()
+    {
+        return $this->hasMany(Plan::class);
     }
 }

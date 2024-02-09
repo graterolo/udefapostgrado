@@ -4,6 +4,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\PreinscritoController;
+use App\Http\Controllers\MasterController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('alumnos', AlumnoController::class)->names('alumnos');
     Route::resource('docentes', DocenteController::class)->names('docentes');
     Route::resource('preinscritos', PreinscritoController::class)->names('preinscritos');
+    Route::resource('masters', MasterController::class)->names('masters');
+    Route::resource('plans', PlanController::class)->names('plans');
+    Route::resource('periodos', PeriodoController::class)->names('periodos');
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
     //Route::get('users', [UserController::class, 'index'])->name('users.index');

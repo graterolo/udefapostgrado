@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class alumno_censo extends Model
+class AlumnoCenso extends Model
 {
     use HasFactory;
     protected $fillable = ['cedula', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nac', 
