@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infoseccions', function (Blueprint $table) {
+        Schema::create('dias', function (Blueprint $table) {
             $table->id();
-            $table->integer('plan_id')->index();
-            $table->integer('periodo_id')->index();
-            $table->string('nombre', 9);
-            $table->integer('docente_id')->index();
-            $table->tinyInteger('modalidad');
-            $table->tinyInteger('cupo');
-            $table->tinyInteger('activo')->default(0);
+            $table->foreignId('infoseccion_id')->constrained('infoseccions')->cascadeOnDelete('restrict');
+            $table->tinyInteger('ndia');
+            $table->time('hora_ent');
+            $table->time('hora_sal');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infoseccions');
+        Schema::dropIfExists('dias');
     }
 };

@@ -50,22 +50,7 @@
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('masters.show', mas.id)">
                                     Activo
                                 </Link>
-                            </td>
-                            <!-- <td class="border-t">
-                                <td class="flex items-center px-6 py-4 focus:text-indigo-500">{{ mas.created_at }}</td>
-                            </td> -->
-                            <!-- <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ index + 1 }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ mas.siglas }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ mas.nombre }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ mas.activo }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ mas.created_at }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                 <Link :href="route('masters.show', mas.id)" 
-                                    class="px-4 py-2 bg-amber-400 text-white border rounded-md"
-                                    >Mostrar</Link
-                                > 
-                            </td> -->
-                           
+                            </td>                           
                         </tr>
                     </tbody>
                 </table>
@@ -81,7 +66,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-//import { usePermission } from '@/Composable/Permission'
+
 
 const props = defineProps({
     masters: {type:Object}
@@ -89,6 +74,5 @@ const props = defineProps({
 const form = useForm({
     id:''
 });
-//const { hasPermission } = usePermission();
 
 </script>

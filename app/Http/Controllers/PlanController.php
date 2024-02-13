@@ -66,7 +66,7 @@ class PlanController extends Controller
         ]);
 
         $plan->save();
-        return redirect('masters')->with('message', 'La materia se ha creado satisfactoriamente');
+        return redirect('plans')->with('message', 'La materia se ha creado satisfactoriamente');
     }
 
 
@@ -128,13 +128,13 @@ class PlanController extends Controller
 
     public function destroy(Plan $plan)
     {
-    //    $id = $plan->id;
-    //    $infoseccion = Infoseccion::where('plan_id', '=', $id)->first();
-    //    if($infoseccion) {
-    //     return redirect('plans')->with('message', 'La materia no puede ser eliminado ya que tiene secciones asociadas');
-    //    } else { 
-    //     $plan->delete();
+       $id = $plan->id;
+       $infoseccion = Infoseccion::where('plan_id', '=', $id)->first();
+       if($infoseccion) {
+        return redirect('plans')->with('message', 'La materia no puede ser eliminado ya que tiene secciones asociadas');
+       } else { 
+        $plan->delete();
          return redirect('plans')->with('message', 'La materia se ha eliminado');
-    //    }
+        }
     }
 }

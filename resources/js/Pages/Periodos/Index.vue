@@ -34,7 +34,7 @@
                             </td>
                             <td class="border-t">
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('periodos.show', per.id)">
-                                    {{ per.nperiodo }}
+                                    {{ per.nombre }}
                                 </Link>
                             </td>
                             <td class="border-t">
@@ -73,7 +73,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-//import { usePermission } from '@/Composable/Permission'
+
 
 const props = defineProps({
     periodos: {type:Object}
@@ -81,6 +81,6 @@ const props = defineProps({
 const form = useForm({
     id:''
 });
-//const { hasPermission } = usePermission();
+
 
 </script>

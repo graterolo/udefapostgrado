@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->id();
-            $table->string('nperiodo', 6)->unique();
+            $table->string('nombre', 6)->unique();
             $table->date('fecha_ini');
             $table->date('fecha_fin'); 
             $table->tinyInteger('activo')->default(0);           

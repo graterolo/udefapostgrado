@@ -7,6 +7,8 @@ use App\Http\Controllers\PreinscritoController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PeriodoController;
+use App\Http\Controllers\InfoseccionController;
+use App\Http\Controllers\DiaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('masters', MasterController::class)->names('masters');
     Route::resource('plans', PlanController::class)->names('plans');
     Route::resource('periodos', PeriodoController::class)->names('periodos');
+    Route::resource('infoseccions', InfoseccionController::class)->names('infoseccions');
+    Route::resource('dias', DiaController::class)->except('show', 'index');
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
     //Route::get('users', [UserController::class, 'index'])->name('users.index');

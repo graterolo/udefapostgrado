@@ -17,10 +17,10 @@
                 <form @submit.prevent="$event => form.post(route('periodos.store'))" >
                   <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-3">
-                        <InputLabel for="nperiodo" value="Período" />
+                        <InputLabel for="nombre" value="Período" />
                         <div class="mt-2">
-                            <TextInput id="nperiodo" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.nperiodo" required autofocus autocomplete="periodo" />
-                            <InputError class="mt-2" :message="form.errors.nperiodo" />
+                            <TextInput id="nombre" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.nombre" required autofocus autocomplete="periodo" />
+                            <InputError class="mt-2" :message="form.errors.nombre" />
                         </div>
                     </div>
                     <div class="sm:col-span-3">
@@ -38,7 +38,7 @@
                         </div>
                     </div>     
                     <div class="sm:col-span-3">
-                        <InputLabel for="activo" value="Activo" />
+                        <InputLabel for="activo" value="Estado" />
                         <div class="mt-2">
                             <select id="activo" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.activo" required>
                                 <option value="0">Inactivo</option>
@@ -71,7 +71,7 @@ import { onMounted } from 'vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 
 const form = useForm({
-    nperiodo: '',
+    nombre: '',
     fecha_ini: '',
     fecha_fin: '',
     activo: '',

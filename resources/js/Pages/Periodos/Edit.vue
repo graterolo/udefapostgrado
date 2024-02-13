@@ -17,10 +17,10 @@
                 <form @submit.prevent="$event => form.patch(route('periodos.update', periodo))" >
                   <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-3">
-                        <InputLabel for="nperiodo" value="Período" />
+                        <InputLabel for="nombre" value="Período" />
                         <div class="mt-2">
-                            <TextInput id="nperiodo" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.nperiodo" required autofocus autocomplete="nperiodo" />
-                            <InputError class="mt-2" :message="form.errors.periodo" />
+                            <TextInput id="nombre" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.nombre" required autofocus autocomplete="nombre" />
+                            <InputError class="mt-2" :message="form.errors.nombre" />
                         </div>
                     </div>
                     <div class="sm:col-span-3">
@@ -42,7 +42,7 @@
                         <div class="mt-2">
                             <select id="activo" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.activo" required>
                                 <option value="0">Inactivo</option>
-                                <option value="1">activo</option>
+                                <option value="1">Activo</option>
                             </select>
                             <InputError class="mt-2" :message="form.errors.activo" />
                         </div>
@@ -83,7 +83,7 @@ const props = defineProps({
     
 });
 const form = useForm({
-    nperiodo: props.periodo.nperiodo,
+    nombre: props.periodo.nombre,
     fecha_ini: props.periodo.fecha_ini,
     fecha_fin: props.periodo.fecha_fin,
     activo: props.periodo.activo,  

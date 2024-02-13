@@ -116,7 +116,7 @@
         </td>
       </tr>
       <tr v-if="plans.length === 0">
-          <td class="px-6 py-4 border-t" colspan="4">No plans found.</td>
+          <td class="px-6 py-4 border-t" colspan="4">No hay plan académico</td>
       </tr>
       </table>
     </div>
