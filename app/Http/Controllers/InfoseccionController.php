@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Redirect;
 
 use Illuminate\Validation\Rule;
 use App\Models\Infoseccion;
+use App\Models\Dia;
 use App\Models\Plan;
 use App\Models\Periodo;
 use App\Models\Docente;
@@ -148,13 +149,13 @@ class InfoseccionController extends Controller
 
     public function destroy(Infoseccion $infoseccion)
     {
-    //    $id = $infoseccion->id;
-    //    $dia = Dia::where('infoseccion_id', '=', $id)->first();
-    //    if($dia) {
-    //     return redirect('infoseccions')->with('message', 'La sección no puede ser eliminada ya que tiene horario asociado');
-    //    } else { 
-    //     $infoseccion->delete();
+       $id = $infoseccion->id;
+       $dia = Dia::where('infoseccion_id', '=', $id)->first();
+       if($dia) {
+        return redirect('infoseccions')->with('message', 'La sección no puede ser eliminada ya que tiene horario asociado');
+       } else { 
+        $infoseccion->delete();
           return redirect('infoseccions')->with('message', 'La sección se ha eliminado');
-    //     }
+         }
     }
 }

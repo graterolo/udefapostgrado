@@ -78,7 +78,7 @@
                         </div>
                     </div>                    
                   </div>
-                    <div class="mt-4 flex flex-col items-end">
+                    <div class="mt-6 flex flex-col items-end">
                         <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                             Guardar
                         </PrimaryButton>
