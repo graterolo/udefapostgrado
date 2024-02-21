@@ -10,20 +10,31 @@ use Inertia\Response;
 class AlumnoController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $tip = auth()->user()->tipo;
-        if($tip == 0) {
+        if($tip == 0) { 
             $ced = auth()->user()->cedula;
             $alumno = Alumno::where('cedula', '=', $ced)->first();
             return Inertia::render('Alumnos/Show', ['alumno' => $alumno ]);
 
-        } elseif($tip == 2) {  
-            $alumnos = Alumno::select('alumnos.id', 'alumnos.nombre1', 'alumnos.apellido1', 'alumnos.cedula', 
+        } elseif($tip == 2) {   
+            $query = Alumno::select('alumnos.id', 'alumnos.nombre1', 'alumnos.apellido1', 'alumnos.cedula', 
             'alumnos.telefono', 'alumnos.titulo', 'users.email as email')
             ->join('users', 'users.id', '=', 'alumnos.user_id')
-            ->orderBy('alumnos.apellido1','ASC')
-            ->paginate(15);
+            ->orderBy('alumnos.apellido1','ASC');
+
+
+         // Filtrar por término de búsqueda si se proporciona
+         if ($request->has('search')) {
+           $searchTerm = $request->input('search');
+              $query->where(function ($query) use ($searchTerm) {
+              $query->where('nombre1', 'like', "%$searchTerm%")
+                    ->orWhere('apellido1', 'like', "%$searchTerm%")
+                    ->orWhere('alumnos.cedula', 'like', "%$searchTerm%");
+         });
+        }
+         $alumnos = $query->paginate(10);
 
             return Inertia::render('Alumnos/Index', [
                'alumnos' => $alumnos

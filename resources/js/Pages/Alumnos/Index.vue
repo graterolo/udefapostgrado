@@ -5,12 +5,11 @@
         <template #header>
             Alumnos
         </template>
-        <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-3">
-                <input v-model="searchTerm" type="text" class="block w-full mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar alumno...">
-            </div>
-        </div>
-        
+
+        <form @submit.prevent="$event => form.get(route('alumnos.index', { search: searchTerm }))" >
+                <input v-model="searchTerm" type="text" class="block w-3/4 mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar alumno...">
+        </form>
+
                 
             <div class="bg-white mt-5 grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full whitespace-no-wrap">
@@ -25,7 +24,7 @@
                        </tr>
                     </thead>
                     <tbody>
-                        <tr  v-for="(alum, index) in filteredAlumnos" :key="alum.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <tr  v-for="(alum, index) in alumnos.data" :key="alum.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
                                     {{ index + 1 }}
@@ -71,20 +70,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { computed, defineProps, ref } from 'vue';
+import { defineProps } from 'vue';
+
 
 const props = defineProps({
     alumnos: {type:Object}
 });
-const searchTerm = ref('');
-
-const filteredAlumnos = computed(() => {
-    const searchTermLowerCase = searchTerm.value.toLowerCase();
-    return props.alumnos.data.filter(alum => {
-        return alum.nombre1.toLowerCase().includes(searchTermLowerCase) ||
-               alum.apellido1.toLowerCase().includes(searchTermLowerCase) ||
-               alum.cedula.includes(searchTermLowerCase);
-    });
+const form = useForm({
+    searchTerm: '',
+   
 });
 
 </script>

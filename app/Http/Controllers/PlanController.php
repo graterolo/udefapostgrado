@@ -12,15 +12,26 @@ use DB;
 class PlanController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $tip = auth()->user()->tipo;
         if($tip == 2) {  
-           $plans = Plan::select('plans.id', 'plans.codigo', 'plans.nombre', 'plans.semestre', 'plans.uc', 
+           $query = Plan::select('plans.id', 'plans.codigo', 'plans.nombre', 'plans.semestre', 'plans.uc', 
            'plans.horast', 'masters.siglas as siglas')
              ->join('masters', 'masters.id', '=', 'plans.master_id')
-             ->orderBy('plans.codigo', 'ASC')
-             ->paginate(15);
+             ->orderBy('plans.codigo', 'ASC');
+
+
+             // Filtrar por término de búsqueda si se proporciona
+            if ($request->has('search')) {
+               $searchTerm = $request->input('search');
+                  $query->where(function ($query) use ($searchTerm) {
+                  $query->where('siglas', 'like', "%$searchTerm%")
+                        ->orWhere('codigo', 'like', "%$searchTerm%")
+                        ->orWhere('plans.nombre', 'like', "%$searchTerm%");
+             });
+            }
+            $plans = $query->paginate(10);
 
              return Inertia::render('Plans/Index', ['plans' => $plans]);
 

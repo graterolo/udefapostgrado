@@ -9,6 +9,7 @@ use App\Models\Dia;
 use App\Models\Plan;
 use App\Models\Periodo;
 use App\Models\Docente;
+use App\Models\Inscripcion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;

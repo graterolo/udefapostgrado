@@ -5,8 +5,10 @@
         <template #header>
             Plan de Estudios
         </template>
-        <div class="flex items-center justify-between mb-6">            
-               <input v-model="searchTerm" type="text" class="w-2/4 mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar materia...">         
+        <div class="flex items-center justify-between mb-6">  
+            <form @submit.prevent="$event => form.get(route('plans.index', { search: searchTerm }))" class="w-3/4">
+                <input v-model="searchTerm" type="text" class="w-3/4 mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar materia...">
+            </form>          
                <Link :href="route('plans.create')" 
                    class="px-1 py-1 bg-indigo-500 text-white border rounded-md ">
                    Nuevo
@@ -26,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr  v-for="(plan, index) in filteredPlans" :key="plan.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <tr  v-for="(plan, index) in plans.data" :key="plan.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('plans.show', plan.id)">
                                     {{ index + 1 }}
@@ -73,20 +75,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { computed, defineProps, ref } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
     plans: {type:Object}
 });
-const searchTerm = ref('');
 
-const filteredPlans = computed(() => {
-    const searchTermLowerCase = searchTerm.value.toLowerCase();
-    return props.plans.data.filter(plan => {
-        return plan.siglas.toLowerCase().includes(searchTermLowerCase) ||
-               plan.codigo.toLowerCase().includes(searchTermLowerCase) ||
-               plan.nombre.toLowerCase().includes(searchTermLowerCase);
-    });
+const form = useForm({
+    searchTerm: '',
+   
 });
+
 
 </script>
