@@ -16,8 +16,12 @@ class PeriodoController extends Controller
     {
         $tip = auth()->user()->tipo;
         if($tip == 2) {  
+            $periodos = Periodo::select('id', 'nombre', 'fecha_ini', 'fecha_fin', 'activo')
+            ->orderByDesc('id')
+            ->paginate(5);
+            
         return Inertia::render('Periodos/Index', [
-            'periodos' => Periodo::paginate(5)
+            'periodos' => $periodos
         ]);
         } else {
             return redirect('dashboard')->with('message', 'No tiene acceso a este modulo');
@@ -42,7 +46,7 @@ class PeriodoController extends Controller
     ]);
            
         $periodo = Periodo::create([
-            'nombre' => $request->nperiodo,
+            'nombre' => $request->nombre,
             'fecha_ini' => $request->fecha_ini,
             'fecha_fin' => $request->fecha_fin,
             'activo' => $request->activo, 

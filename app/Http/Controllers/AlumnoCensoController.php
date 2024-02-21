@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\alumno_censo;
+use App\Models\AlumnoCenso;
 use Illuminate\Http\Request;
 
 class AlumnoCensoController extends Controller

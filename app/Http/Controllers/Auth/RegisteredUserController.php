@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
         } elseif($request->tipo==0) {  
             $request->validate([
                 'name' => 'required|string|max:100',
-                'cedula' => 'required|exists:alumno_censos,cedula|exists:censo_masters,cedula,validado,1',
+                'cedula' => 'required|exists:alumno_censos,cedula|exists:censo_masters,cedula,validado,1|unique:'.User::class,
                 'tipo' => 'required',
                 'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],

@@ -5,8 +5,7 @@
         <template #header>
             Carga Académica
         </template>
-        <!-- v-if="hasPermission('empresas.create')"   v-if="$user->hasRole('empresas.create')"-->
-                  <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
+                <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
                     <Link :href="route('infoseccions.create')" 
                         class="px-1 py-1 bg-indigo-500 text-white border rounded-md "
                         >Nuevo</Link

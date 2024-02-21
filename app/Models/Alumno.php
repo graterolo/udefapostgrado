@@ -16,6 +16,15 @@ class Alumno extends Model
         return $this->belongsTo(Users::class);
     }
 
+    public function inscripcions()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+    public function notas()
+    {
+        return $this->hasMany(Nota::class);
+    }
+
     public function getNameAttribute()
     {
         return $this->nombre1.' '.$this->apellido1;

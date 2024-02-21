@@ -24,8 +24,9 @@ class InfoseccionController extends Controller
            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
            'infoseccions.cupo', 'infoseccions.activo', 'periodos.nombre as pnombre')
              ->join('periodos', 'periodos.id', '=', 'infoseccions.periodo_id')
+             ->orderByDesc('periodos.nombre')
              ->orderBy('infoseccions.nombre', 'ASC')
-             ->paginate(5);
+             ->paginate(20);
 
              return Inertia::render('Infoseccions/Index', ['infoseccions' => $infoseccions]);
 
@@ -37,11 +38,14 @@ class InfoseccionController extends Controller
     public function create()
     {
         $plans = Plan::select('id', 'codigo', 'nombre')->orderBy('codigo', 'ASC')->get();
-        //$periodos = Periodo::select('id', 'nombre')->where('activo', '=', 1)->get();
+        $periodos = Periodo::select('id', 'nombre')
+            ->orderByDesc('id')
+            ->limit(2)
+            ->get();
         $docentes = Docente::select('id', 'nombre')->get();
-         // 'periodos' => $periodos, por ahora ya no envio el periodo   
+           
         return Inertia::render('Infoseccions/Create', [
-            'plans' => $plans, 'docentes' => $docentes
+            'plans' => $plans, 'periodos' => $periodos, 'docentes' => $docentes
         ]);
     }
 
@@ -49,6 +53,7 @@ class InfoseccionController extends Controller
     {
         $request->validate([
             'plan_id' => 'required',
+            'periodo_id' => 'required',
             'docente_id' => 'required',
             'modalidad' => 'required',
             'cupo' => 'required', 
@@ -151,8 +156,9 @@ class InfoseccionController extends Controller
     {
        $id = $infoseccion->id;
        $dia = Dia::where('infoseccion_id', '=', $id)->first();
-       if($dia) {
-        return redirect('infoseccions')->with('message', 'La sección no puede ser eliminada ya que tiene horario asociado');
+       $inscripcion = Inscripcion::where('infoseccion_id', '=', $id)->first();
+       if($dia || $inscripcion) {
+        return redirect('infoseccions')->with('message', 'La sección no puede ser eliminada ya que tiene horario asociado o alumnos inscritos');
        } else { 
         $infoseccion->delete();
           return redirect('infoseccions')->with('message', 'La sección se ha eliminado');

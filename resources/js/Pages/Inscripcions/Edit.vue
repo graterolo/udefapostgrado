@@ -1,0 +1,1 @@
+<template><div>Hola soy alumno</div></template>

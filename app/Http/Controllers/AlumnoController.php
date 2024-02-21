@@ -19,20 +19,16 @@ class AlumnoController extends Controller
             return Inertia::render('Alumnos/Show', ['alumno' => $alumno ]);
 
         } elseif($tip == 2) {  
-        return Inertia::render('Alumnos/Index', [
-            'alumnos' => Alumno::paginate()
-        ]);
+            $alumnos = Alumno::select('alumnos.id', 'alumnos.nombre1', 'alumnos.apellido1', 'alumnos.cedula', 
+            'alumnos.telefono', 'alumnos.titulo', 'users.email as email')
+            ->join('users', 'users.id', '=', 'alumnos.user_id')
+            ->orderBy('alumnos.apellido1','ASC')
+            ->paginate(15);
+
+            return Inertia::render('Alumnos/Index', [
+               'alumnos' => $alumnos
+            ]);
         }
-    }
-
-     public function create()
-    {
-        //
-    }
-
-     public function store(Request $request)
-    {
-        //
     }
 
     public function show(Alumno $alumno)

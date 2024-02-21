@@ -1,0 +1,1 @@
+import{o,c as r,s}from"./app-rIty18ko.js";const n=["type"],c={__name:"PrimaryButton",props:{type:{type:String,default:"submit"}},setup(t){return(e,p)=>(o(),r("button",{type:t.type,class:"rounded-md bg-indigo-600 px-4 py-2 text-center text-sm text-white hover:bg-indigo-500"},[s(e.$slots,"default")],8,n))}};export{c as _};

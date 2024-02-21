@@ -19,5 +19,9 @@ class Infoseccion extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+    public function inscripcions()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
 
 }

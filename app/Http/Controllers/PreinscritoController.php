@@ -33,22 +33,11 @@ class PreinscritoController extends Controller
         ->join('alumnos', 'alumnos.cedula', '=', 'preinscritos.cedula')
         ->join('masters', 'masters.id', '=', 'preinscritos.master_id')
         ->orderBy('masters.nombre', 'ASC')
-        ->paginate(5);
+        ->paginate(15);
 
         return Inertia::render('Preinscritos/Index', ['preinscritos' => $preinscritos]);
         }
     }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
 
     public function show(Preinscrito $preinscrito)
     {
@@ -82,8 +71,8 @@ class PreinscritoController extends Controller
         return redirect('preinscritos')->with('message', 'Preinscripción modificada satisfactoriamente');
     }
 
-    public function destroy(Preinscrito $preinscrito)
-    {
-        //
-    }
+    // public function destroy(Preinscrito $preinscrito)
+    // {
+    //     //
+    // }
 }

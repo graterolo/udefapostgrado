@@ -20,7 +20,7 @@ class PlanController extends Controller
            'plans.horast', 'masters.siglas as siglas')
              ->join('masters', 'masters.id', '=', 'plans.master_id')
              ->orderBy('plans.codigo', 'ASC')
-             ->paginate(5);
+             ->paginate(15);
 
              return Inertia::render('Plans/Index', ['plans' => $plans]);
 
@@ -44,10 +44,14 @@ class PlanController extends Controller
     {
         $request->validate([
             'master_id' => 'required',
-            'codigo' => 'required|string|max:6|unique:'.Plan::class,
+            'codigo' => 'required|string|max:6|min:6|unique:'.Plan::class,
             'nombre' => 'required|string|max:100',
             'semestre' => 'required', 
             'uc' => 'required',  
+        ], [
+            'codigo.unique' => 'El código ya existe. Por favor, ingrese un código diferente.',
+            'codigo.min' => 'El código debe ser de 6 caracteres',
+            'codigo.max' => 'El código debe ser de 6 caracteres',
         ]);
            
         $plan = Plan::create([
@@ -98,15 +102,16 @@ class PlanController extends Controller
         $request->validate([
             'master_id' => 'required',
             'codigo' => [
-                'required', 'max:6',
+                'required', 'max:6', 'min:6',
                 Rule::unique('plans')->ignore($plan->id),
             ],
             'nombre' => 'required|string|max:100',
             'semestre' => 'required',
             'uc' => 'required',   
-        ], ['codigo.unique' => 'El código ya se encuentra registrado']);
+        ], ['codigo.unique' => 'El código ya se encuentra registrado',
+           'codigo.min' => 'El código debe ser de 6 caracteres',
+           'codigo.max' => 'El código debe ser de 6 caracteres',]);
 
-        //$plan->update($request->all());
         $plan->update([
             'master_id' => $request->master_id,
             'codigo' => $request->codigo,

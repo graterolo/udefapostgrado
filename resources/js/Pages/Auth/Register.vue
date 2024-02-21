@@ -18,7 +18,7 @@
 
             <div>
                 <InputLabel for="cedula" value="Cédula" />
-                <TextInput id="cedula" type="text" class="mt-1 block w-full" v-model="form.cedula" required autocomplete="cedula" />
+                <TextInput id="cedula" type="number" class="mt-1 block w-full" v-model="form.cedula" required autocomplete="cedula" />
                 <!-- <InputError class="mt-2" :message="form.errors.cedula" /> -->
                 <div v-if="errors.cedula" class="text-sm text-red-600">{{ errors.cedula }}</div>
             </div>

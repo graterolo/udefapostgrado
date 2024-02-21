@@ -26,15 +26,14 @@
                         <InputError class="mt-2" :message="form.errors.plan_id" />
                         </div>
                     </div>
-                    <!-- Por ahora el periodo lo busco en el controlador para escoger el ultimo activo -->
-                    <!-- <div class="sm:col-span-3">
+                    <div class="sm:col-span-3">
                         <InputLabel for="periodo_id" value="Período" />
                         <div class="mt-2">
                             <SelectInput id="periodo_id" :options="periodos" type="text" v-model="form.periodo_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required >
                             </SelectInput>
                             <InputError class="mt-2" :message="form.errors.periodo_id" />
                         </div>
-                    </div> -->
+                    </div>
                     <div class="sm:col-span-3">
                         <InputLabel for="docente_id" value="Docente" />
                         <div class="mt-2">
@@ -95,7 +94,7 @@ import { defineProps } from 'vue';
 
 const form = useForm({
     plan_id: '',
-   // periodo_id: '',
+    periodo_id: '',
     docente_id: '',
     modalidad: '',
     cupo: '',
@@ -105,7 +104,7 @@ const form = useForm({
 const props = defineProps({
     errors: { type: Object },
     plans: { type: Object },
-  //  periodos: { type: Object },
+    periodos: { type: Object },
     docentes: { type: Object },
 });
 </script>

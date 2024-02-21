@@ -86,7 +86,7 @@
                   </div>              
             </div>
         </div>
-            <div class=" justify-between flex flex-row space-x-2 mb-2 ">
+          <div class=" justify-between flex flex-row space-x-2 mb-2 ">
               <div class="mt-10 text-2xl  text-gray-900 shadow-sm ">Sesiones de Clase</div>
                 <div class="mt-10 ml-10 overflow-hidden shadow-sm sm:rounded-lg  ">
                   <PrimaryButton @click="openModal(1)">
@@ -133,9 +133,6 @@
                <div class="sm:col-span-2">
                   <InputLabel for="ndia" value="Día" />
                   <div class="mt-2">
-                      <!-- <TextInput id="id" type="text" v-model="form.id" style="display: none;" /> -->
-                      <!-- <TextInput id="infoseccion_id" type="text" v-model="form.infoseccion_id" style="display: none;" /> -->
-                      <!-- <TextInput id="ndia" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.ndia" ref="nameInputs" required  autocomplete="Dia" /> -->
                       <select id="ndia" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.ndia" required>
                                 <option value="1">Lunes</option>
                                 <option value="2">Martes</option>
@@ -185,7 +182,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import InputLabel from '@/Components/InputLabel.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { computed, ref, nextTick } from 'vue';
+import { computed, ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -202,7 +199,6 @@ const formattedDate = computed(() => new Date(props.infoseccion.updated_at).toLo
 
 
 const modal = ref(false);
-const nameInput = ref(null);
 const title = ref('');
 const operacion = ref(1);
 const id = ref('');
@@ -229,7 +225,6 @@ const ok = () => {
 // Método para abrir el modal
 const openModal = (op, ndia, hora_ent, hora_sal, infoseccion_id, dia) => {
     modal.value = true;
-    //nextTick(() => nameInput.value.focus());ref="nameInputs"
     operacion.value = op;
     id.value = dia;
     if(op == 1){

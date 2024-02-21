@@ -28,25 +28,28 @@ class UserController extends Controller
         return Inertia::render('Users/Create');
     }
     public function store(Request $request)
-    {   //dd($request);
+    {   
 
         if($request->tipo==1) {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'cedula' => 'required|exists:docentes,cedula',
+                'cedula' => 'required|exists:docentes,cedula|unique:'.User::class,
                 'tipo' => 'required',
                 'email' => 'required|string|email|max:255|unique:'.User::class,
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],            
-            ], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+            ], ['cedula.unique' => 'La cédula ya se encuentra registrada',
+                'cedula.exists' => 'Debe registrar al docente',
+                'email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
             ]);
         } elseif($request->tipo==2) {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'cedula' => 'required',
+                'cedula' => 'required|unique:'.User::class,
                 'tipo' => 'required',
                 'email' => 'required|string|email|max:255|unique:'.User::class,
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],            
-            ], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+            ], ['cedula.unique' => 'La cédula ya se encuentra registrada',
+                'email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
             ]);
         }           
         $user = User::create([
@@ -69,12 +72,16 @@ class UserController extends Controller
     public function update(Request $request, User $user){
         $request->validate([
             'name' => 'required|string|max:255',
-            'cedula' => 'required',
+            'cedula' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'tipo' => 'required',
             'email' => [
                 'required',
                 Rule::unique('users')->ignore($user->id),
-            ],], ['email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+            ],], ['cedula.unique' => 'La cédula ya se encuentra registrada',
+                'email.unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
         ]);
         //$user->update($request->all());
         $user->update([

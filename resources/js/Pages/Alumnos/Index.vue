@@ -5,15 +5,14 @@
         <template #header>
             Alumnos
         </template>
-        <!-- v-if="hasPermission('empresas.create')"   v-if="$user->hasRole('empresas.create')"-->
-                 <!-- <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
-                    <Link :href="route('inventarios.create')" 
-                        class="px-1 py-1 bg-indigo-500 text-white border rounded-md "
-                        >Nuevo</Link
-                    >            
-                </div>   -->
+        <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+                <input v-model="searchTerm" type="text" class="block w-full mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar alumno...">
+            </div>
+        </div>
+        
                 
-            <div class="bg-white grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white mt-5 grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
                         <tr class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -22,25 +21,41 @@
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Cédula</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Teléfono</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Correo</th>
-                            <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Fecha Registro</th>
-                            <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"></th>
-                        </tr>
+                            <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Titulo</th>
+                       </tr>
                     </thead>
                     <tbody>
-                        <tr  v-for="(alum, index) in alumnos.data" :key="alum.id" class="text-gray-700">
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ index + 1 }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ alum.nombre1 }} {{ alum.apellido1 }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ alum.cedula }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ alum.telefono }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ $page.props.auth.user.email }}</td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm"><LabelFecha>{{ alum.created_at }}</LabelFecha></td>
-                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                 <Link :href="route('alumnos.show', alum.id)" 
-                                    class="px-4 py-2 bg-amber-400 text-white border rounded-md"
-                                    >Mostrar</Link
-                                > 
+                        <tr  v-for="(alum, index) in filteredAlumnos" :key="alum.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ index + 1 }}
+                                </Link>
                             </td>
-                           
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ alum.nombre1 }} {{ alum.apellido1 }}
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ alum.cedula }}
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ alum.telefono }}
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ alum.email }}
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('alumnos.show', alum.id)">
+                                    {{ alum.titulo }}
+                                </Link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -56,15 +71,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import LabelFecha from '@/Components/LabelFecha.vue';
-//import { usePermission } from '@/Composable/Permission'
+import { computed, defineProps, ref } from 'vue';
 
 const props = defineProps({
     alumnos: {type:Object}
 });
-const form = useForm({
-    id:''
+const searchTerm = ref('');
+
+const filteredAlumnos = computed(() => {
+    const searchTermLowerCase = searchTerm.value.toLowerCase();
+    return props.alumnos.data.filter(alum => {
+        return alum.nombre1.toLowerCase().includes(searchTermLowerCase) ||
+               alum.apellido1.toLowerCase().includes(searchTermLowerCase) ||
+               alum.cedula.includes(searchTermLowerCase);
+    });
 });
-//const { hasPermission } = usePermission();
 
 </script>

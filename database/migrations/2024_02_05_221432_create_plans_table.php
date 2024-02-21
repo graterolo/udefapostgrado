@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('prelacion2', 6)->nullable();
             $table->tinyInteger('semestre');
             $table->tinyInteger('uc');
-            $table->tinyInteger('horast')->nullable()->default(0);
-            $table->tinyInteger('horasp')->nullable()->default(0);
+            $table->mediumInteger('horast')->nullable()->default(0);
+            $table->mediumInteger('horasp')->nullable()->default(0);
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

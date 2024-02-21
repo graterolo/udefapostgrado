@@ -5,12 +5,12 @@
         <template #header>
             Agregar Plan de Estudio
         </template>
-        <!-- <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
-            <Link :href="route('masters.index')" 
+         <div  class="mt-1 mb-1 grid justify-items-end p-1 border-b border-gray-200 ">
+            <Link :href="route('plans.index')" 
                 class="px-1 py-1 bg-indigo-500 text-white border rounded-md "
                 >Listado</Link
             >            
-        </div> -->
+        </div> 
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">

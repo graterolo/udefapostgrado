@@ -55,7 +55,7 @@
                     <div class="sm:col-span-3">
                         <div class="mt-2">
                             <InputLabel for="fecha_nac" value="Fecha de Nacimiento" />
-                            <TextInput id="fecha_nac" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.fecha_nac" required readonly autocomplete="fecha_nac" />
+                            <TextInput id="fecha_nac" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.fecha_nac" required autocomplete="fecha_nac" />
                             <InputError class="mt-2" :message="form.errors.fecha_nac" />        
                         </div>
                     </div> 
@@ -129,6 +129,9 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import { onMounted } from 'vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 
 const props = defineProps({ 
@@ -150,5 +153,10 @@ const form = useForm({
     telefono: props.alumno.telefono,
     celular: props.alumno.celular,
     titulo: props.alumno.titulo,
+});
+onMounted(() => {
+  flatpickr('#fecha_nac', {
+    // Configuración adicional de Flatpickr si es necesario
+  });
 });
 </script>

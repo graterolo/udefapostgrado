@@ -7,8 +7,6 @@
         <div class="flex justify-center items-center mt-8">
             <div class="flex items-center">
                 <img class = "limg" src="/images/logo_udefa_vector.png"  alt="">
-
-                <!-- <span class="mx-2 text-2xl font-semibold text-white">Dashboard</span> -->
             </div>
         </div>
 
@@ -59,7 +57,7 @@
                             <Link class="w-full" :href="route('preinscritos.index')">Preinscripción</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('dashboard')">Inscripción</Link>
+                            <Link class="w-full" :href="route('inscripcions.index')">Inscripción</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('dashboard')">Calificaciones</Link>
@@ -119,6 +117,9 @@
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('infoseccions.index')">Carga Académica</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('conf-inscripcions.index')">Configurar Inscripción</Link>
                         </li>
                     </ul>
                 </div>

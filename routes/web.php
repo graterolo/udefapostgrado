@@ -9,6 +9,8 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\InfoseccionController;
 use App\Http\Controllers\DiaController;
+use App\Http\Controllers\ConfInscripcionController;
+use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,15 +44,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->names('users');
     Route::resource('alumnos', AlumnoController::class)->names('alumnos');
     Route::resource('docentes', DocenteController::class)->names('docentes');
-    Route::resource('preinscritos', PreinscritoController::class)->names('preinscritos');
+    Route::resource('preinscritos', PreinscritoController::class)->names('preinscritos')->except('store', 'create', 'destroy');
     Route::resource('masters', MasterController::class)->names('masters');
     Route::resource('plans', PlanController::class)->names('plans');
     Route::resource('periodos', PeriodoController::class)->names('periodos');
     Route::resource('infoseccions', InfoseccionController::class)->names('infoseccions');
-    Route::resource('dias', DiaController::class)->except('show', 'index');
+    Route::resource('dias', DiaController::class)->except('show', 'index', 'edit');
+    Route::resource('conf-inscripcions', ConfInscripcionController::class)->names('conf-inscripcions')->except('show');
+    Route::resource('inscripcions', InscripcionController::class)->names('inscripcions')->except('show', 'edit', 'create');
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
-    //Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('inscribir/{cedula}', [InscripcionController::class, 'inscribir'])->name('inscribir');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

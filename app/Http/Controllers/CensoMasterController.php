@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\censo_master;
+use App\Models\CensoMaster;
 use Illuminate\Http\Request;
 
 class CensoMasterController extends Controller

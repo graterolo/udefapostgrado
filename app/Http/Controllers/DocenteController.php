@@ -21,7 +21,7 @@ class DocenteController extends Controller
 
         } elseif($tip == 2) {  
         return Inertia::render('Docentes/Index', [
-            'docentes' => Docente::paginate()
+            'docentes' => Docente::paginate(10)
         ]);
         }
     }
