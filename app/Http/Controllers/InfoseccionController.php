@@ -10,6 +10,8 @@ use App\Models\Plan;
 use App\Models\Periodo;
 use App\Models\Docente;
 use App\Models\Inscripcion;
+use App\Models\Aula;
+use App\Models\Hora;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -112,9 +114,17 @@ class InfoseccionController extends Controller
           ->where('infoseccions.id', '=', $id)
           ->first();
 
-        $dias = Dia::where('infoseccion_id', '=', $id)->get();
+        $dias = Dia::select('dias.id', 'dias.infoseccion_id', 'dias.ndia', 'dias.hora_ent', 'dias.hora_sal',
+        'dias.aula_id','aulas.codigo')
+            ->join('aulas', 'aulas.id', '=', 'dias.aula_id')
+            ->where('dias.infoseccion_id', '=', $id)
+            ->get();
+
+        $aulas = Aula::get();
+        $horas = Hora::get();
        
-        return Inertia::render('Infoseccions/Show', ['infoseccion' => $infoseccion, 'dias' => $dias ]);
+        return Inertia::render('Infoseccions/Show', ['infoseccion' => $infoseccion, 'dias' => $dias,
+        'aulas' => $aulas, 'horas' => $horas ]);
     }
 
     public function edit(Infoseccion $infoseccion)
@@ -164,5 +174,71 @@ class InfoseccionController extends Controller
         $infoseccion->delete();
           return redirect('infoseccions')->with('message', 'La sección se ha eliminado');
          }
+    }
+
+    public function carga() 
+    {
+        $periodo = Periodo::select('id', 'nombre')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();
+        $tip = auth()->user()->tipo;
+        if($tip == 1) {
+            $ced = auth()->user()->cedula;
+            $docente = Docente::select('id', 'cedula', 'nombre')
+             ->where('cedula', $ced)
+             ->first();
+
+            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
+            'plans.nombre as pnombre', 'dias.ndia', 'dias.hora_ent', 'dias.hora_sal', 'aulas.codigo')
+                ->leftjoin('dias', 'dias.infoseccion_id', '=', 'infoseccions.id')
+                ->leftjoin('aulas', 'aulas.id', '=', 'dias.aula_id')
+                ->join('plans', 'plans.id', '=', 'infoseccions.plan_id')
+                ->where('infoseccions.activo', '=', 1)
+                ->where('infoseccions.periodo_id', '=', $periodo->id)
+                ->where('infoseccions.docente_id', $docente->id)
+                ->get();
+
+            $horas = Hora::all();
+
+            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente, 
+            'infoseccions' => $infoseccions, 'horas' => $horas ]);
+
+        } elseif($tip == 2) {  
+            // Voy a buscar a los docentes que tengan carga academica en este periodo 
+            $docentes = Docente::select('docentes.id', 'docentes.nombre', 'docentes.cedula')
+                ->join('infoseccions', 'infoseccions.docente_id', '=', 'docentes.id')
+                ->where('infoseccions.activo', '=', 1)
+                ->where('infoseccions.periodo_id', '=', $periodo->id)
+                ->groupBy('docentes.id', 'docentes.nombre', 'docentes.cedula')
+                ->paginate(15);
+
+            return Inertia::render('Carga-Acad/Index', ['docentes' => $docentes]);
+        } else {
+            return redirect('dashboard')->with('message', 'No tiene acceso a este modulo');
+        }
+
+    }
+
+    public function cargadoc($cedula) 
+    {
+        $periodo = Periodo::select('id', 'nombre')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();
+
+            $docente = Docente::select('id', 'cedula', 'nombre')
+             ->where('cedula', $cedula)
+             ->first();
+
+            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
+            'plans.nombre as pnombre', 'dias.ndia', 'dias.hora_ent', 'dias.hora_sal', 'aulas.codigo')
+                ->leftjoin('dias', 'dias.infoseccion_id', '=', 'infoseccions.id')
+                ->leftjoin('aulas', 'aulas.id', '=', 'dias.aula_id')
+                ->join('plans', 'plans.id', '=', 'infoseccions.plan_id')
+                ->where('infoseccions.activo', '=', 1)
+                ->where('infoseccions.periodo_id', '=', $periodo->id)
+                ->where('infoseccions.docente_id', $docente->id)
+                ->get();
+
+            $horas = Hora::all();
+
+            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente, 
+            'infoseccions' => $infoseccions, 'horas' => $horas ]);
+
     }
 }

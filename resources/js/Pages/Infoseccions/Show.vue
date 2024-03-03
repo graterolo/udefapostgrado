@@ -102,6 +102,7 @@
             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Día</th>
             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Hora de Entrada</th>
             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Hora de Salida</th>
+            <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Aula</th>
             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"></th>
           </tr>
            <tr v-for="dia, i in dias" :key="dia.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -114,8 +115,9 @@
           <td v-if="dia.ndia === 6" class="border-b border-gray-200 bg-white px-5 py-5 text-sm">Sábado</td>
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ dia.hora_ent }}</td>
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ dia.hora_sal }}</td>
+          <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ dia.codigo }}</td>
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-            <WarningButton @click="$event => openModal(2, dia.ndia, dia.hora_ent, dia.hora_sal, info, dia.id)">
+            <WarningButton @click="$event => openModal(2, dia.ndia, dia.hora_ent, dia.hora_sal, dia.aula_id, info, dia.id)">
                     Editar
             </WarningButton>
             <button @click="$event => deleteDia(dia.id)" class="rounded-md bg-red-600 px-4 py-2 text-center text-sm text-white hover:bg-red-500 gap-6 ml-2">
@@ -147,17 +149,34 @@
                <div class="sm:col-span-2">
                   <InputLabel for="hora_ent" value="Hora Ent." />
                   <div class="mt-2">
-                      <TextInput id="hora_ent" type="time" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.hora_ent" required  autocomplete="hora entrada" />
+                    <select v-model="form.hora_ent" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required >
+                        <option :value="null" disabled>Selecciona una opción</option>
+                        <option v-for="hora in horas" :key="hora.id" :value="hora.he">{{ hora.he }}</option>
+                    </select>
+                      <!-- <TextInput id="hora_ent" type="time" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.hora_ent" required  autocomplete="hora entrada" /> -->
                       <InputError class="mt-2" :message="form.errors.hora_ent" />
                   </div>
                </div>
                <div class="sm:col-span-2">
                   <InputLabel for="hora_sal" value="Hora Sal." />
                   <div class="mt-2">
-                      <TextInput id="hora_sal" type="time" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.hora_sal" required  autocomplete="hora salida" />
+                    <select v-model="form.hora_sal" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required >
+                        <option :value="null" disabled>Selecciona una opción</option>
+                        <option v-for="hora in horas" :key="hora.id" :value="hora.hs">{{ hora.hs }}</option>
+                    </select>
+                      <!-- <TextInput id="hora_sal" type="time" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="form.hora_sal" required  autocomplete="hora salida" /> -->
                       <InputError class="mt-2" :message="form.errors.hora_sal" />
                   </div>
                </div>
+               <div class="sm:col-span-2">
+                  <InputLabel for="aula_id" value="Aula" />
+                  <div class="mt-2">
+                    <SelectInput id="aula_id" :options="aulas" type="text" v-model="form.aula_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required >
+                    </SelectInput>
+                      <InputError class="mt-2" :message="form.errors.aula_id" />
+                  </div>
+               </div>
+               <div class="sm:col-span-4"></div>
                <div class="sm:col-span-2">
                  <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click="save">
                     Guardar
@@ -187,12 +206,14 @@ import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import WarningButton from '@/Components/WarningButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import SelectInput from '@/Components/SelectInput.vue';
 import InputError from '@/Components/InputError.vue';
 
 const props = defineProps({ 
     infoseccion: {type:Object},
     dias: {type:Object},
+    horas: {type:Object},
+    aulas: {type:Object},
 
 });
 const formattedDate = computed(() => new Date(props.infoseccion.updated_at).toLocaleDateString());
@@ -204,7 +225,7 @@ const operacion = ref(1);
 const id = ref('');
 const info = props.infoseccion.id;
 const form = useForm({
-    infoseccion_id: '', ndia: '', hora_ent: '', hora_sal: '',
+    infoseccion_id: '', ndia: '', hora_ent: '', hora_sal: '', aula_id: '',
 });
 const save = () => {
     if (operacion.value == 1) {
@@ -223,7 +244,7 @@ const ok = () => {
 }
 
 // Método para abrir el modal
-const openModal = (op, ndia, hora_ent, hora_sal, infoseccion_id, dia) => {
+const openModal = (op, ndia, hora_ent, hora_sal, aula_id, infoseccion_id, dia) => {
     modal.value = true;
     operacion.value = op;
     id.value = dia;
@@ -236,6 +257,7 @@ const openModal = (op, ndia, hora_ent, hora_sal, infoseccion_id, dia) => {
         form.ndia =ndia;
         form.hora_ent=hora_ent;
         form.hora_sal=hora_sal;
+        form.aula_id=aula_id;
     }
 }
 

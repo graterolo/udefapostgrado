@@ -11,6 +11,7 @@ use App\Http\Controllers\InfoseccionController;
 use App\Http\Controllers\DiaController;
 use App\Http\Controllers\ConfInscripcionController;
 use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\NotaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -52,9 +53,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('dias', DiaController::class)->except('show', 'index', 'edit');
     Route::resource('conf-inscripcions', ConfInscripcionController::class)->names('conf-inscripcions')->except('show');
     Route::resource('inscripcions', InscripcionController::class)->names('inscripcions')->except('show', 'edit', 'create');
+    Route::resource('notas', NotaController::class)->names('notas')->only('index', 'store', 'destroy');
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
     Route::get('inscribir/{cedula}', [InscripcionController::class, 'inscribir'])->name('inscribir');
+    Route::get('carga', [InfoseccionController::class, 'carga'])->name('carga');
+    Route::get('cargadoc/{cedula}', [InfoseccionController::class, 'cargadoc'])->name('cargadoc');
+    Route::get('calificaciones/{cedula}', [NotaController::class, 'calificaciones'])->name('calificaciones');
+    Route::get('calificacion/{seccion}', [NotaController::class, 'calificacion'])->name('calificacion');
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

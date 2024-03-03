@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dias', function (Blueprint $table) {
+        Schema::create('aulas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('infoseccion_id')->constrained('infoseccions')->cascadeOnDelete('restrict');
-            $table->tinyInteger('ndia');
-            $table->time('hora_ent');
-            $table->time('hora_sal');
-            $table->integer('aula_id')->index();
+            $table->string('codigo', 5)->unique();
+            $table->string('nombre', 50);
+            $table->tinyInteger('capacidad');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dias');
+        Schema::dropIfExists('aulas');
     }
 };

@@ -17,13 +17,15 @@ class DiaController extends Controller
         'infoseccion_id' => 'required',
         'ndia' => 'required',
         'hora_ent' => 'required',
-        'hora_sal' => 'required',   
+        'hora_sal' => 'required', 
+        'aula_id' => 'required',  
     ]);
     $dia = Dia::create([
         'infoseccion_id' => $request->infoseccion_id,
         'ndia' => $request->ndia,
         'hora_ent' => $request->hora_ent, 
-        'hora_sal' => $request->hora_sal, 
+        'hora_sal' => $request->hora_sal,
+        'aula_id' => $request->aula_id,  
         'created_by' => auth()->user()->id,
         'updated_by' => auth()->user()->id,         
     ]);
@@ -38,12 +40,14 @@ class DiaController extends Controller
             'ndia' => 'required',
             'hora_ent' => 'required',
             'hora_sal' => 'required',   
+            'aula_id' => 'required',
         ]);
         $dia->update([
             'infoseccion_id' => $request->infoseccion_id,
             'ndia' => $request->ndia,
             'hora_ent' => $request->hora_ent, 
             'hora_sal' => $request->hora_sal, 
+            'aula_id' => $request->aula_id, 
             'updated_by' => auth()->user()->id,         
         ]);
         $dia->save();

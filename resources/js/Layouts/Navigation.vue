@@ -85,7 +85,10 @@
                             <Link class="w-full" :href="route('docentes.index')"> Datos Personales</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('dashboard')">Carga Académica</Link>
+                            <Link class="w-full" :href="route('carga')">Carga Académica</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('notas.index')">Calificaciones</Link>
                         </li>
                     </ul>
                 </div>

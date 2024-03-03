@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dia extends Model
 {
     use HasFactory;
-    protected $fillable = ['infoseccion_id', 'ndia', 'hora_ent', 'hora_sal', 'created_by', 'updated_by'];
+    protected $fillable = ['infoseccion_id', 'ndia', 'hora_ent', 'hora_sal', 'aula_id','created_by', 'updated_by'];
 
     protected $casts = [
         'hora_ent' => 'datetime:H:i:s',
