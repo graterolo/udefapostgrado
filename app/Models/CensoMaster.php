@@ -15,4 +15,10 @@ class CensoMaster extends Model
         return $this->belongsTo(Master::class);
     }
 
+    // Nueva relación para enlazar los datos personales del censo
+    public function alumnoCenso()
+    {
+        return $this->belongsTo(AlumnoCenso::class, 'cedula', 'cedula');
+    }
+
 }

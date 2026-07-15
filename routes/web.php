@@ -5,6 +5,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\PreinscritoController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\CensoValidacionController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\InfoseccionController;
@@ -61,6 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::get('cargadoc/{cedula}', [InfoseccionController::class, 'cargadoc'])->name('cargadoc');
     Route::get('calificaciones/{cedula}', [NotaController::class, 'calificaciones'])->name('calificaciones');
     Route::get('calificacion/{seccion}', [NotaController::class, 'calificacion'])->name('calificacion');
+
+    // Módulo independiente de Censos (Solo necesitas estas 2 nuevas rutas)
+    Route::get('censos', [CensoValidacionController::class, 'index'])->name('censos.index');
+    Route::patch('censos/{id}/validar', [CensoValidacionController::class, 'validar'])->name('censos.validar');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
