@@ -3,7 +3,7 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Validación de Alumnos Censados
+            Validación de Preinscripción de Alumnos Censados
         </template>
 
         <!-- Buscador integrado con el backend -->
@@ -62,7 +62,7 @@
                                 @click="aprobarPago(censo.id)"
                                 class="inline-flex items-center px-3 py-1 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-green-600 transition"
                             >
-                                Validar Pago
+                                Validar
                             </button>
                             <span v-else class="text-green-600 font-bold text-xs uppercase">Habilitado</span>
                         </td>

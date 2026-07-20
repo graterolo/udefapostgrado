@@ -4,16 +4,16 @@
     <AuthenticatedLayout>
         <template #header>
             Módulo de Calificaciones (Docente)
-        </template> 
+        </template>
         <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
                 <ul role="list" class="marker:text-indigo-400 list-disc pl-5 space-y-3 text-slate-500">
                     <p><b>Docente:</b>  {{ props.docente.nombre }} </p>
-                    <li><b>Período:</b> {{ props.periodo.nombre }}</li>               
-                </ul>           
+                    <li><b>Período:</b> {{ props.periodo.nombre }}</li>
+                </ul>
             </div>
         </div>
-                
+
               <div class="bg-white mt-6 grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full whitespace-nowrap">
                     <thead>
@@ -22,6 +22,7 @@
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Sección</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Modalidad</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Nombre de la Materia</th>
+                            <th v-if="$page.props.auth.user.tipo === 2" class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Reporte</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,11 +56,22 @@
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('calificacion', { seccion: info.id })">
                                     {{ info.pnombre }}
                                 </Link>
-                            </td>                           
+                            </td>
+                            <td v-if="$page.props.auth.user.tipo === 2" class="border-t">
+                                <Link
+                                    :href="route('reportes.seccion.imprimir', { seccion: info.id })"
+                                    class="rounded-md bg-indigo-600 px-4 py-2 text-center text-sm text-white hover:bg-indigo-500"
+                                >
+                                    Ver Acta
+                                </Link>
+
+
+
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>       
+            </div>
 
     </AuthenticatedLayout>
 </template>

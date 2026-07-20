@@ -6,6 +6,7 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\PreinscritoController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\CensoValidacionController;
+use App\Http\Controllers\PagoUcController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\InfoseccionController;
@@ -63,10 +64,16 @@ Route::middleware('auth')->group(function () {
     Route::get('calificaciones/{cedula}', [NotaController::class, 'calificaciones'])->name('calificaciones');
     Route::get('calificacion/{seccion}', [NotaController::class, 'calificacion'])->name('calificacion');
 
-    // Módulo independiente de Censos (Solo necesitas estas 2 nuevas rutas)
+    // Módulo independiente de Censos
     Route::get('censos', [CensoValidacionController::class, 'index'])->name('censos.index');
     Route::patch('censos/{id}/validar', [CensoValidacionController::class, 'validar'])->name('censos.validar');
 
+    // Módulo de Carga Administrativa de Unidades de Crédito (UC)
+    Route::get('pago-ucs', [PagoUcController::class, 'index'])->name('pagoucs.index');
+    Route::post('pago-ucs/cargar', [PagoUcController::class, 'cargarUc'])->name('pagoucs.cargar');
+
+    // Ruta para el Acta de Calificaciones / Lista de Clase Oficial
+    Route::get('reportes/seccion/{seccion}/imprimir', [NotaController::class, 'reporteImprimir'])->name('reportes.seccion.imprimir');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

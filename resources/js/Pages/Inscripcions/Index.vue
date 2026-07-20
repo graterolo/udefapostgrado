@@ -10,7 +10,7 @@
                 <input v-model="searchTerm" type="text" class="block w-full mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar alumno...">
             </div>
         </div>
-           
+
             <div class="bg-white mt-5 grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -34,9 +34,11 @@
                                     {{ pre.nombre1 }} {{ pre.apellido1 }}
                                 </Link>
                             </td>
-                            <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('inscribir', { cedula: pre.cedula })">
-                                    {{ pre.cedula }}
-                            </Link>
+                            <td class="border-t">
+                                <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('inscribir', { cedula: pre.cedula })">
+                                        {{ pre.cedula }}
+                                </Link>
+                            </td>
                             <td class="border-t">
                                 <Link class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm" :href="route('inscribir', { cedula: pre.cedula })">
                                     {{ pre.nombre }}
@@ -44,14 +46,14 @@
                             </td>
                             <td class="flex items-center px-5 py-3 focus:text-indigo-500 text-sm">
                                <LabelFecha2 :value="pre.updated_at" />
-                            </td>                          
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
               <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
                 <pagination :links="preinscritos.links" />
-            </div>  
+            </div>
 
     </AuthenticatedLayout>
 </template>
