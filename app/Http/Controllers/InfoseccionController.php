@@ -23,8 +23,8 @@ class InfoseccionController extends Controller
     public function index()
     {
         $tip = auth()->user()->tipo;
-        if($tip == 2) {  
-           $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
+        if($tip == 2) {
+           $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad',
            'infoseccions.cupo', 'infoseccions.activo', 'periodos.nombre as pnombre')
              ->join('periodos', 'periodos.id', '=', 'infoseccions.periodo_id')
              ->orderByDesc('periodos.nombre')
@@ -46,7 +46,7 @@ class InfoseccionController extends Controller
             ->limit(2)
             ->get();
         $docentes = Docente::select('id', 'nombre')->get();
-           
+
         return Inertia::render('Infoseccions/Create', [
             'plans' => $plans, 'periodos' => $periodos, 'docentes' => $docentes
         ]);
@@ -59,13 +59,13 @@ class InfoseccionController extends Controller
             'periodo_id' => 'required',
             'docente_id' => 'required',
             'modalidad' => 'required',
-            'cupo' => 'required', 
-            'activo' => 'required',  
+            'cupo' => 'required',
+            'activo' => 'required',
         ]);
-        $periodo = Periodo::select('id')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();  
-        if($periodo) { 
+        $periodo = Periodo::select('id')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();
+        if($periodo) {
             $codigo = Plan::select('codigo')->where('id', '=', $request->plan_id)->first();
-            $mat = $codigo->codigo; 
+            $mat = $codigo->codigo;
             $sec = Infoseccion::select('nombre')->where('periodo_id', '=', $periodo->id)
                    ->where('nombre', 'LIKE', "%{$mat}%" )
                    ->orderBy('id', 'DESC')
@@ -75,11 +75,11 @@ class InfoseccionController extends Controller
                 $seccion = $codigo->codigo.'01';
             } else {
                 $count=substr($sec->nombre, 6,8)+1;
-                if($count < 10) 
+                if($count < 10)
                   $seccion = $codigo->codigo.'0'.$count;
                 else
-                  $seccion = $codigo->codigo.$count;               
-            }         
+                  $seccion = $codigo->codigo.$count;
+            }
 
           $infoseccion = Infoseccion::create([
               'plan_id' => $request->plan_id,
@@ -87,7 +87,7 @@ class InfoseccionController extends Controller
               'nombre' => $seccion,
               'docente_id' => $request->docente_id,
               'modalidad' => $request->modalidad,
-              'cupo' => $request->cupo,            
+              'cupo' => $request->cupo,
               'activo' => $request->activo,
               'created_by' => auth()->user()->id,
               'updated_by' => auth()->user()->id,
@@ -104,8 +104,8 @@ class InfoseccionController extends Controller
     public function show(Infoseccion $infoseccion)
     {
         $id = $infoseccion->id;
-        $infoseccion = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
-        'infoseccions.cupo', 'infoseccions.activo', 'infoseccions.updated_at', 'infoseccions.updated_by', 
+        $infoseccion = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad',
+        'infoseccions.cupo', 'infoseccions.activo', 'infoseccions.updated_at', 'infoseccions.updated_by',
         'docentes.nombre as dnombre', 'periodos.nombre as pnombre', 'plans.nombre as panombre', 'users.name as name')
           ->join('periodos', 'periodos.id', '=', 'infoseccions.periodo_id')
           ->join('plans', 'plans.id', '=', 'infoseccions.plan_id')
@@ -122,7 +122,7 @@ class InfoseccionController extends Controller
 
         $aulas = Aula::get();
         $horas = Hora::get();
-       
+
         return Inertia::render('Infoseccions/Show', ['infoseccion' => $infoseccion, 'dias' => $dias,
         'aulas' => $aulas, 'horas' => $horas ]);
     }
@@ -132,7 +132,7 @@ class InfoseccionController extends Controller
         $plans = Plan::select('id', 'codigo', 'nombre')->orderBy('codigo', 'ASC')->get();
         $periodos = Periodo::select('id', 'nombre')->where('activo', '=', 1)->get();
         $docentes = Docente::select('id', 'nombre')->get();
-        
+
         return Inertia::render('Infoseccions/Edit', [ 'infoseccion' => $infoseccion,
             'plans' => $plans, 'periodos' => $periodos, 'docentes' => $docentes
         ]);
@@ -144,23 +144,23 @@ class InfoseccionController extends Controller
             'plan_id' => 'required',
             'docente_id' => 'required',
             'modalidad' => 'required',
-            'cupo' => 'required', 
-            'activo' => 'required',  
+            'cupo' => 'required',
+            'activo' => 'required',
         ]);
 
         $infoseccion->update([
               'plan_id' => $request->plan_id,
-              'periodo_id' => $periodo->id,
+              'periodo_id' => $request->periodo_id,
               'docente_id' => $request->docente_id,
               'modalidad' => $request->modalidad,
-              'cupo' => $request->cupo,            
+              'cupo' => $request->cupo,
               'activo' => $request->activo,
               'updated_by' => auth()->user()->id,
 
         ]);
 
         $infoseccion->save();
-        return redirect('infoseccions')->with('message', 'La sección se ha editado satisfactoriamente'); 
+        return redirect('infoseccions')->with('message', 'La sección se ha editado satisfactoriamente');
     }
 
     public function destroy(Infoseccion $infoseccion)
@@ -170,13 +170,13 @@ class InfoseccionController extends Controller
        $inscripcion = Inscripcion::where('infoseccion_id', '=', $id)->first();
        if($dia || $inscripcion) {
         return redirect('infoseccions')->with('message', 'La sección no puede ser eliminada ya que tiene horario asociado o alumnos inscritos');
-       } else { 
+       } else {
         $infoseccion->delete();
           return redirect('infoseccions')->with('message', 'La sección se ha eliminado');
          }
     }
 
-    public function carga() 
+    public function carga()
     {
         $periodo = Periodo::select('id', 'nombre')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();
         $tip = auth()->user()->tipo;
@@ -186,7 +186,7 @@ class InfoseccionController extends Controller
              ->where('cedula', $ced)
              ->first();
 
-            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
+            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad',
             'plans.nombre as pnombre', 'dias.ndia', 'dias.hora_ent', 'dias.hora_sal', 'aulas.codigo')
                 ->leftjoin('dias', 'dias.infoseccion_id', '=', 'infoseccions.id')
                 ->leftjoin('aulas', 'aulas.id', '=', 'dias.aula_id')
@@ -198,11 +198,11 @@ class InfoseccionController extends Controller
 
             $horas = Hora::all();
 
-            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente, 
+            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente,
             'infoseccions' => $infoseccions, 'horas' => $horas ]);
 
-        } elseif($tip == 2) {  
-            // Voy a buscar a los docentes que tengan carga academica en este periodo 
+        } elseif($tip == 2) {
+            // Voy a buscar a los docentes que tengan carga academica en este periodo
             $docentes = Docente::select('docentes.id', 'docentes.nombre', 'docentes.cedula')
                 ->join('infoseccions', 'infoseccions.docente_id', '=', 'docentes.id')
                 ->where('infoseccions.activo', '=', 1)
@@ -217,7 +217,7 @@ class InfoseccionController extends Controller
 
     }
 
-    public function cargadoc($cedula) 
+    public function cargadoc($cedula)
     {
         $periodo = Periodo::select('id', 'nombre')->where('activo', '=', 1)->orderBy('id', 'DESC')->first();
 
@@ -225,7 +225,7 @@ class InfoseccionController extends Controller
              ->where('cedula', $cedula)
              ->first();
 
-            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad', 
+            $infoseccions = Infoseccion::select('infoseccions.id', 'infoseccions.nombre', 'infoseccions.modalidad',
             'plans.nombre as pnombre', 'dias.ndia', 'dias.hora_ent', 'dias.hora_sal', 'aulas.codigo')
                 ->leftjoin('dias', 'dias.infoseccion_id', '=', 'infoseccions.id')
                 ->leftjoin('aulas', 'aulas.id', '=', 'dias.aula_id')
@@ -237,7 +237,7 @@ class InfoseccionController extends Controller
 
             $horas = Hora::all();
 
-            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente, 
+            return Inertia::render('Carga-Acad/Show', ['periodo' => $periodo, 'docente' => $docente,
             'infoseccions' => $infoseccions, 'horas' => $horas ]);
 
     }
