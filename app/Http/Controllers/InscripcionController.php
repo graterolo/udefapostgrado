@@ -22,21 +22,21 @@ class InscripcionController extends Controller
     public function index(Request $request)
     {
         // Valido que las inscripciones esten abiertas para el periodo activo
- 
+
         $hoy = now()->format('Y-m-d');
-        // Busco el periodo activo (el ultimo porsi por error hay mas de uno)  
+        // Busco el periodo activo (el ultimo porsi por error hay mas de uno)
         $periodo = Periodo::select('id', 'nombre as nperiodo')
              ->where('activo', 1)
              ->orderByDesc('id')
              ->first();
-        if($periodo){      
+        if($periodo){
           $conf = ConfInscripcion::select('fecha_ini', 'fecha_fin')
              ->where('periodo_id', $periodo->id)
              ->where(function ($query) use ($hoy) {
                 $query->where('fecha_ini', '<=', $hoy)
                       ->where('fecha_fin', '>=', $hoy);
              })
-             ->first();    
+             ->first();
 
             if($conf) {
                 $tip = auth()->user()->tipo;
@@ -45,7 +45,7 @@ class InscripcionController extends Controller
                     $alumno = Alumno::where('cedula', '=', $ced)->first();
 
                     // Obtener el último master al que se preinscribió el alumno
-                    $preinscrito = Preinscrito::where('cedula', '=', $ced)     
+                    $preinscrito = Preinscrito::where('cedula', '=', $ced)
                       ->orderByDesc('id')
                       ->first();
 
@@ -60,7 +60,7 @@ class InscripcionController extends Controller
                             })
                             ->where('nota_final', '>', 9)
                             ->get();
-     
+
                        if ($materias_aprobadas->isNotEmpty()) {
                         // Obtener los códigos de las materias aprobadas por el alumno
                         $codigos_aprobados = Plan::whereIn('id', $materias_aprobadas->pluck('plan_id'))
@@ -81,7 +81,7 @@ class InscripcionController extends Controller
                         // Ofrecer las materias del primer semestre
                          $materias_permitidas = Plan::where('master_id', $preinscrito->master_id)
                           ->where('semestre', 1)
-                          ->get(); 
+                          ->get();
                          }
                         // Ahora busco las secciones disponibles de las materias permitidas
                         $secciones_disponibles = Infoseccion::select('infoseccions.id', 'infoseccions.nombre',
@@ -91,7 +91,7 @@ class InscripcionController extends Controller
                            ->where('infoseccions.periodo_id', $periodo->id)
                            ->whereIn('infoseccions.plan_id', $materias_permitidas->pluck('id'))
                            ->orderBy('infoseccions.nombre', 'ASC')
-                           ->get(); 
+                           ->get();
 
                         /////// busco la informacion faltante para pasar todos los props ///////////
                         // Nombre de la maestria o post //
@@ -106,7 +106,7 @@ class InscripcionController extends Controller
                            ->join('plans', 'plans.id', '=', 'infoseccions.plan_id')
                            ->where('inscripcions.alumno_id', $alumno->id)
                            ->where('infoseccions.periodo_id', $periodo->id)
-                           ->get(); 
+                           ->get();
 
                         // busco las uc pagadas y disponibles
                         $uc = PagoUc::where('cedula', $ced)
@@ -116,21 +116,21 @@ class InscripcionController extends Controller
                         if ($uc === null || $uc->uc_disponibles == 0) {
                             // Si no hay pago registrado, puedes asignar un valor predeterminado o un mensaje
                             $uc = ['mensaje' => 'No tiene UC disponibles'];
-                        }      
+                        }
 
                         return Inertia::render('Inscripcions/Create', ['alumno' => $alumno,
                         'secciones' => $secciones_disponibles, 'periodo' => $periodo, 'maestria' => $maestria,
-                        'insc' => $insc, 'uc' => $uc ]);   
+                        'insc' => $insc, 'uc' => $uc ]);
 
                     } else {
                      // esto nunca debe pasar
                      return Redirect::back()->with('message', 'Alumno no preinscrito en ningun postgrado');
                      }
-                   
-                /// si es un administrador ///
-                } elseif($tip == 2) {  
 
-                    $preinscritos = Preinscrito::select('preinscritos.id', 'preinscritos.cedula', 'preinscritos.master_id', 'preinscritos.updated_at', 'alumnos.nombre1', 
+                /// si es un administrador ///
+                } elseif($tip == 2) {
+
+                    $preinscritos = Preinscrito::select('preinscritos.id', 'preinscritos.cedula', 'preinscritos.master_id', 'preinscritos.updated_at', 'alumnos.nombre1',
                     'alumnos.apellido1', 'masters.nombre')
                       ->join('alumnos', 'alumnos.cedula', '=', 'preinscritos.cedula')
                       ->join('masters', 'masters.id', '=', 'preinscritos.master_id')
@@ -138,7 +138,7 @@ class InscripcionController extends Controller
                       ->orderBy('alumnos.apellido1', 'ASC')
                       ->paginate(15);
 
-                   return Inertia::render('Inscripcions/Index', ['preinscritos' => $preinscritos]);                   
+                   return Inertia::render('Inscripcions/Index', ['preinscritos' => $preinscritos]);
                  }
             } else {
                 return Redirect::back()->with('message', 'Inscripciones cerradas');
@@ -151,27 +151,27 @@ class InscripcionController extends Controller
     public function inscribir($cedula)
     {
        // Valido que las inscripciones esten abiertas para el periodo activo
- 
+
         $hoy = now()->format('Y-m-d');
-        // Busco el periodo activo (el ultimo porsi por error hay mas de uno)  
+        // Busco el periodo activo (el ultimo porsi por error hay mas de uno)
         $periodo = Periodo::select('id', 'nombre as nperiodo')
              ->where('activo', 1)
              ->orderByDesc('id')
              ->first();
-        if($periodo){      
+        if($periodo){
           $conf = ConfInscripcion::select('fecha_ini', 'fecha_fin')
              ->where('periodo_id', $periodo->id)
              ->where(function ($query) use ($hoy) {
                 $query->where('fecha_ini', '<=', $hoy)
                       ->where('fecha_fin', '>=', $hoy);
              })
-             ->first();    
+             ->first();
 
             if($conf) {
                 $alumno = Alumno::where('cedula', '=', $cedula)->first();
 
                 // Obtengo el último master al que se preinscribió el alumno
-                $preinscrito = Preinscrito::where('cedula', '=', $cedula)     
+                $preinscrito = Preinscrito::where('cedula', '=', $cedula)
                       ->orderByDesc('id')
                       ->first();
 
@@ -186,7 +186,7 @@ class InscripcionController extends Controller
                             })
                         ->where('nota_final', '>', 9)
                         ->get();
-     
+
                     if ($materias_aprobadas->isNotEmpty()) {
                       // Obtener los códigos de las materias aprobadas por el alumno
                         $codigos_aprobados = Plan::whereIn('id', $materias_aprobadas->pluck('plan_id'))
@@ -207,7 +207,7 @@ class InscripcionController extends Controller
                         // Ofrecer las materias del primer semestre
                          $materias_permitidas = Plan::where('master_id', $preinscrito->master_id)
                             ->where('semestre', 1)
-                            ->get(); 
+                            ->get();
                         }
                         // Ahora busco las secciones disponibles de las materias permitidas
                         $secciones_disponibles = Infoseccion::select('infoseccions.id', 'infoseccions.nombre',
@@ -217,7 +217,7 @@ class InscripcionController extends Controller
                            ->where('infoseccions.periodo_id', $periodo->id)
                            ->whereIn('infoseccions.plan_id', $materias_permitidas->pluck('id'))
                            ->orderBy('infoseccions.nombre', 'ASC')
-                           ->get(); 
+                           ->get();
 
                         /////// busco la informacion faltante para pasar todos los props ///////////
                         // Nombre de la maestria o post //
@@ -232,7 +232,7 @@ class InscripcionController extends Controller
                            ->join('plans', 'plans.id', '=', 'infoseccions.plan_id')
                            ->where('inscripcions.alumno_id', $alumno->id)
                            ->where('infoseccions.periodo_id', $periodo->id)
-                           ->get(); 
+                           ->get();
 
                         // busco las uc pagadas y disponibles
                         $uc = PagoUc::where('cedula', $cedula)
@@ -242,30 +242,30 @@ class InscripcionController extends Controller
                         if ($uc === null || $uc->uc_disponibles == 0) {
                             // Si no hay pago registrado, puedes asignar un valor predeterminado o un mensaje
                             $uc = ['mensaje' => 'No tiene UC disponibles'];
-                        }      
+                        }
 
                         return Inertia::render('Inscripcions/Create', ['alumno' => $alumno,
                         'secciones' => $secciones_disponibles, 'periodo' => $periodo, 'maestria' => $maestria,
-                        'insc' => $insc, 'uc' => $uc ]);   
+                        'insc' => $insc, 'uc' => $uc ]);
 
                     } else {
                      // esto nunca debe pasar
                      return Redirect::back()->with('message', 'Alumno no preinscrito en ningun postgrado');
-                     }               
+                     }
             } else {
                 return Redirect::back()->with('message', 'Inscripciones cerradas');
             }
         } else {
             return Redirect::back()->with('message', 'No hay un período activo');
-        }        
-       
+        }
+
     }
 
     public function store(Request $request)
-    {   
+    {
         $request->validate([
             'alumno_id' => 'required',
-            'infoseccion_id' => 'required',             
+            'infoseccion_id' => 'required',
         ]);
         // ahora debo validar la cantidad de UCs disponibles del alumno Vs la cantidad de UCs de la materia
 
@@ -275,18 +275,18 @@ class InscripcionController extends Controller
                 ->where('infoseccions.id', $request->infoseccion_id)
                 ->first();
 
-        // busco si no ha agregado esta misma materia en este periodo 
+        // busco si no ha agregado esta misma materia en este periodo
         $validar_mat = Inscripcion::select('inscripcions.infoseccion_id', 'infoseccions.id','infoseccions.plan_id')
                 ->join('infoseccions', 'infoseccions.id', '=', 'inscripcions.infoseccion_id')
                 ->where('inscripcions.alumno_id', $request->alumno_id)
                 ->where('infoseccions.plan_id', $cant_uc->plan_id)
                 ->where('infoseccions.periodo_id', $request->periodo_id)
                 ->first();
-        
+
         if($validar_mat){
             return Redirect::back()->with('message', 'La materia ya está inscrita, seleccione otra');
-        } 
-        else {  
+        }
+        else {
 
           // busco las uc pagadas y disponibles
           $alumno = Alumno::where('id', '=', $request->alumno_id)->first();
@@ -294,16 +294,16 @@ class InscripcionController extends Controller
            ->orderByDesc('id')
            ->first();
 
-         if ($pago_uc === null || $pago_uc->uc_disponibles == 0) {     
+         if ($pago_uc === null || $pago_uc->uc_disponibles == 0) {
             return Redirect::back()->with('message', 'No ha realizado el pago de UC');
-         } else { 
-            if($pago_uc->uc_disponibles >= $cant_uc->uc) {   
-             
+         } else {
+            if($pago_uc->uc_disponibles >= $cant_uc->uc) {
+
               $inscripcion = Inscripcion::create([
                 'alumno_id' => $request->alumno_id,
-                'infoseccion_id' => $request->infoseccion_id,            
+                'infoseccion_id' => $request->infoseccion_id,
                 'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,         
+                'updated_by' => auth()->user()->id,
               ]);
               $inscripcion->save();
               // ahora debo restar las UCs disponibles del alumno
@@ -312,7 +312,7 @@ class InscripcionController extends Controller
               ]);
               $pago_uc->save();
               // ahora resto el cupo de la seccion
-              $infoseccion = Infoseccion::where('id', $request->infoseccion_id)->first(); 
+              $infoseccion = Infoseccion::where('id', $request->infoseccion_id)->first();
               $infoseccion->update([
                   'cupo' => $infoseccion->cupo-1,
               ]);
@@ -329,10 +329,10 @@ class InscripcionController extends Controller
     {
         $request->validate([
             'alumno_id' => 'required',
-            'infoseccion_id' => 'required',             
+            'infoseccion_id' => 'required',
         ]);
         // ahora debo validar la cantidad de UCs disponibles del alumno Vs la cantidad de UCs de la materia
-        // primero debo saber la cantidad de UC de la materia que estoy modificando y obtengo el 
+        // primero debo saber la cantidad de UC de la materia que estoy modificando y obtengo el
         // infoseccion_id de la seccion vieja
         $cant_uc_old = Inscripcion::select('inscripcions.id', 'inscripcions.infoseccion_id', 'infoseccions.plan_id', 'plans.uc as old_uc')
                 ->join('infoseccions', 'infoseccions.id', '=', 'inscripcions.infoseccion_id')
@@ -346,15 +346,15 @@ class InscripcionController extends Controller
                 ->where('infoseccions.id', $request->infoseccion_id)
                 ->first();
 
-         
+
         // busco las uc pagadas y disponibles
         $alumno = Alumno::where('id', '=', $request->alumno_id)->first();
         $pago_uc = PagoUc::where('cedula', $alumno->cedula)
               ->orderByDesc('id')
-              ->first();        
+              ->first();
 
 
-        // Voy a validar que la seccion que quiero modificar no tenga nota aun 
+        // Voy a validar que la seccion que quiero modificar no tenga nota aun
         $validar_mat = Inscripcion::select('inscripcions.infoseccion_id', 'notas.nota_final')
                 ->join('notas', 'notas.infoseccion_id', '=', 'inscripcions.infoseccion_id')
                 ->where('inscripcions.alumno_id', $request->alumno_id)
@@ -362,16 +362,16 @@ class InscripcionController extends Controller
                 ->first();
         if($validar_mat){
             return Redirect::back()->with('message', 'La materia que desea cambiar ya tiene nota, no puede cambiarla');
-        } 
-        else {      
+        }
+        else {
 
           $puede = 0; $dif = 0;
           // Valido si la cantidad de UC de la materia nueva es mayor a la cantidad de UC de la materia vieja
           // valido si no tengo suficientes UC para hacer el cambio
           if($cant_uc->uc > $cant_uc_old->old_uc) {
              $dif = $cant_uc->uc - $cant_uc_old->old_uc;
-             
-            // si no dispone de esta cantidad de UC lo saco         
+
+            // si no dispone de esta cantidad de UC lo saco
             if($pago_uc->uc_disponibles < $dif) {
                 return Redirect::back()->with('message', 'No dispone de mas UC para realizar el cambio');
             } else {
@@ -389,15 +389,15 @@ class InscripcionController extends Controller
                 $pago_uc->update([
                     'uc_disponibles' => $pago_uc->uc_disponibles - $dif,
                 ]);
-                $pago_uc->save();  
+                $pago_uc->save();
                 // ahora resto el cupo de la seccion nueva
-                $infoseccion = Infoseccion::where('id', $request->infoseccion_id)->first(); 
+                $infoseccion = Infoseccion::where('id', $request->infoseccion_id)->first();
                 $infoseccion->update([
                   'cupo' => $infoseccion->cupo-1,
                 ]);
                 $infoseccion->save();
                 // y sumo el cupo de la seccion vieja $cant_uc_old->infoseccion_id
-                $infoseccion2 = Infoseccion::where('id', $cant_uc_old->infoseccion_id)->first(); 
+                $infoseccion2 = Infoseccion::where('id', $cant_uc_old->infoseccion_id)->first();
                 $infoseccion2->update([
                     'cupo' => $infoseccion->cupo+1,
                   ]);
@@ -405,7 +405,7 @@ class InscripcionController extends Controller
                 return Redirect::back()->with('message', 'Materia modificada satisfactoriamente');
 
              }
-           }          
+           }
         } //validar si la materia tienen nota
     }
 
@@ -421,13 +421,14 @@ class InscripcionController extends Controller
                 ->join('notas', 'notas.infoseccion_id', '=', 'inscripcions.infoseccion_id')
                 ->where('inscripcions.alumno_id', $inscripcion->alumno_id)
                 ->where('notas.infoseccion_id', $infoseccion->infoseccion_id)
+                ->where('notas.alumno_id', $inscripcion->alumno_id)
                 ->first();
         if($validar_mat){
             return Redirect::back()->with('message', 'La materia que desea eliminar ya tiene nota, no puede eliminarla');
-        } 
+        }
         else {
-            // sumo cupo a la seccion 
-            $infoseccion2 = Infoseccion::where('id', $infoseccion->infoseccion_id)->first(); 
+            // sumo cupo a la seccion
+            $infoseccion2 = Infoseccion::where('id', $infoseccion->infoseccion_id)->first();
             $infoseccion2->update([
                 'cupo' => $infoseccion->cupo+1,
             ]);
