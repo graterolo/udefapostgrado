@@ -59,7 +59,7 @@ class NotaController extends Controller
                     'notas.nota_final' // Puede ser NULL si el docente no la ha cargado
                 )
                 ->where('inscripcions.alumno_id', $alumno->id)
-                ->where('infoseccions.periodo_id', $periodo->id)
+                //->where('infoseccions.periodo_id', $periodo->id)
                 ->orderBy('plans.nombre', 'ASC')
                 ->get();
 
