@@ -412,7 +412,7 @@ class InscripcionController extends Controller
     public function destroy(Inscripcion $inscripcion)
     {
         // busco el infoseccion_id de la seccion vieja
-        $infoseccion = Inscripcion::select('inscripcions.infoseccion_id')
+        $infoseccion = Inscripcion::select('inscripcions.alumno_id','inscripcions.infoseccion_id')
                 ->join('infoseccions', 'infoseccions.id', '=', 'inscripcions.infoseccion_id')
                 ->where('inscripcions.id', $inscripcion->id)
                 ->first();
@@ -434,6 +434,18 @@ class InscripcionController extends Controller
             ]);
             $infoseccion2->save();
             $inscripcion->delete();
+            $ucs = Plan::where('id', $infoseccion2->plan_id)->first();
+            $uc = $ucs->uc;
+            // busco las uc pagadas y disponibles
+            $alumno = Alumno::where('id', '=', $infoseccion->alumno_id)->first();
+            $pago_uc = PagoUc::where('cedula', $alumno->cedula)
+            ->orderByDesc('id')
+            ->first();
+            $pago_uc->update([
+                'uc_disponibles' => $pago_uc->uc_disponibles + $uc,
+            ]);
+            $pago_uc->save();
+
             return Redirect::back()->with('message', 'La materia ha sido eliminada');
         }
     }
