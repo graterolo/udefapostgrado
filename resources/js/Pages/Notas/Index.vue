@@ -5,6 +5,14 @@
         <template #header>
             Módulo de Calificaciones (Docente)
         </template>
+
+        <div class="overflow-hidden shadow-sm sm:rounded-lg flex flex-row space-x-2 mb-2 justify-end">
+                <Link v-if="$page.props.auth.user.tipo === 2" :href="route('notas.index')"
+                    class="inline-flex items-right px-4 py-2 gap-0.5 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >Listado</Link
+                >
+        </div>
+
         <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
                 <ul role="list" class="marker:text-indigo-400 list-disc pl-5 space-y-3 text-slate-500">

@@ -5,12 +5,12 @@
         <template #header>
             Módulo de Calificaciones
         </template>
-        <div class="flex items-center justify-between mb-6">            
-               <input v-model="searchTerm" type="text" class="w-2/4 mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar docente..."> 
-               <div>
-               {{ props.periodo.nombre }}
-               </div>                    
-        </div>       
+        <div class="flex items-center justify-between mb-6">
+               <input v-model="searchTerm" type="text" class="w-2/4 mt-4 p-2 border border-gray-300 rounded-md" placeholder="Buscar docente...">
+               <div class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+               Período: {{ props.periodo.nombre }}
+               </div>
+        </div>
             <div class="bg-white grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -43,7 +43,7 @@
             </div>
               <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
                 <pagination :links="docentes.links" />
-            </div>  
+            </div>
 
     </AuthenticatedLayout>
 </template>

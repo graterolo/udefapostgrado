@@ -4,21 +4,33 @@
     <AuthenticatedLayout>
         <template #header>
             Módulo de Calificaciones (Notas)
-        </template> 
+        </template>
+        <div class="overflow-hidden shadow-sm sm:rounded-lg flex flex-row space-x-2 mb-2 justify-end">
+             <Link v-if="$page.props.auth.user.tipo >= 1" :href="route('calificaciones', docente.cedula)"
+                    class="inline-flex items-right px-4 py-2 gap-0.5 bg-amber-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-amber-500 active:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >Volver</Link
+                >
+
+                <Link v-if="$page.props.auth.user.tipo === 2" :href="route('notas.index')"
+                    class="inline-flex items-right px-4 py-2 gap-0.5 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >Listado</Link
+                >
+        </div>
+
         <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
                 <ul role="list" class="marker:text-indigo-400 list-disc pl-5 space-y-3 text-slate-500">
                     <p><b>Nombre del Docente:</b>  {{ props.docente.nombre }} </p>
-                    <li><b>Período Académico:</b> {{ props.periodo.nombre }}</li>  
+                    <li><b>Período Académico:</b> {{ props.periodo.nombre }}</li>
                     <li><b>Nombre de la Sección:</b> {{ props.infoseccion.nombre }}</li>
-                    <li><b>Nombre de la Materia:</b> {{ props.infoseccion.pnombre }}</li>             
-                </ul>           
+                    <li><b>Nombre de la Materia:</b> {{ props.infoseccion.pnombre }}</li>
+                </ul>
             </div>
         </div>
         <div class=" justify-between flex flex-row space-x-2 mb-2 ">
-            <div class="mt-10 text-2xl  text-gray-900 shadow-sm ">Alumnos inscritos en esta sección</div>              
+            <div class="mt-10 text-2xl  text-gray-900 shadow-sm ">Alumnos inscritos en esta sección</div>
        </div>
-                
+
        <div class="bg-white mt-6 grid v-screen overflow-hidden shadow-sm sm:rounded-lg">
        <form @submit.prevent="handleSubmit">
           <table class="w-full whitespace-nowrap">
@@ -46,16 +58,17 @@
           </table>
                 <button type="submit" class="w-3/4 m-6 rounded-md bg-indigo-600 px-4 py-2 text-center text-sm text-white hover:bg-indigo-500">Guardar</button>
         </form>
-       </div>       
+       </div>
 
     </AuthenticatedLayout>
 </template>
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { defineProps } from 'vue';
 import { router } from '@inertiajs/vue3';
+
 
 const props = defineProps({
     periodo: {type:Object},
