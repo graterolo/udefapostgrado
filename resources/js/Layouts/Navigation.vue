@@ -67,7 +67,13 @@
                             <Link class="w-full block" :href="route('inscripcions.index')">Inscripción</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full block" :href="route('notas.index')">Calificaciones</Link>
+                            <!-- <Link class="w-full block" :href="route('notas.index')">Calificaciones</Link> -->
+                            <Link
+                                class="w-full block"
+                                :href="$page.props.auth.user.tipo === 2 ? route('admin.calificaciones.alumnos') : route('notas.index')"
+                            >
+                                Calificaciones
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -149,6 +155,39 @@
                     </ul>
                 </div>
             </transition>
+
+            <!-- MENÚ DESPLEGABLE: REPORTES (Solo Administradores) -->
+            <a v-if="$page.props.auth.user.tipo === 2"
+               class="flex items-center mt-4 py-2 px-6 text-gray-100 hover:bg-gray-800 transition"
+               href="#"
+               @click.prevent="showingTwoLevelMenu4 = !showingTwoLevelMenu4"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+                <span class="mx-3">Reportes Admin</span>
+            </a>
+
+            <transition
+                enter-to-class="transition-all duration-300 ease-in-out"
+                enter-from-class="max-h-0 opacity-25"
+                leave-from-class="opacity-100 max-h-xl"
+                leave-to-class="max-h-0 opacity-0">
+                 <div v-show="showingTwoLevelMenu4">
+                    <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner" aria-label="submenu">
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <!-- Opción para ir a buscar al Alumno y ver su historial de notas histórico -->
+                            <Link class="w-full block" :href="route('admin.reportes.buscar-historial')">Historial de Alumno</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <!-- Opción para ir a buscar al Alumno y emitir la constancia institucional -->
+                            <Link class="w-full block" :href="route('admin.reportes.buscar-constancia')">Constancia de Estudios</Link>
+                        </li>
+                    </ul>
+                </div>
+            </transition>
+
+
         </nav>
     </div>
 </template>
@@ -162,6 +201,7 @@ import { ref } from 'vue';
 const showingTwoLevelMenu = ref(false);
 const showingTwoLevelMenu2 = ref(false);
 const showingTwoLevelMenu3 = ref(false);
+const showingTwoLevelMenu4 = ref(false);
 
 </script>
 

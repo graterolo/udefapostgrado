@@ -78,6 +78,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    // Reporte de Lista de Asistencia Física (12 Semanas)
+    Route::get('reportes/seccion/{seccion}/asistencia', [NotaController::class, 'reporteAsistencia'])->name('reportes.seccion.asistencia');
+
+    // Buscador e Historial de Calificaciones de un Alumno
+    Route::get('admin/reportes/buscar-historial', function () {
+        return Inertia::render('Reportes/BuscarHistorial'); // Apunta a la carpeta Reportes existente
+    })->name('admin.reportes.buscar-historial');
+
+    Route::get('admin/reportes/historial-alumno', [NotaController::class, 'historialPorCedula'])->name('admin.reportes.historial');
+
+    // Buscador y Emisión de Constancia de Estudios
+    Route::get('admin/reportes/buscar-constancia', function () {
+        return Inertia::render('Reportes/BuscarConstancia'); // Apunta a la carpeta Reportes existente
+    })->name('admin.reportes.buscar-constancia');
+
+    Route::get('admin/reportes/constancia-estudios', [NotaController::class, 'constanciaEstudios'])->name('admin.reportes.constancia');
+
+    Route::get('admin/reportes/imprimir-historial/{cedula}', [NotaController::class, 'imprimirHistorialAlumno'])->name('admin.reportes.imprimir-historial');
+
+    Route::get('admin/calificaciones-alumnos', [NotaController::class, 'indexAlumnosAdmin'])->name('admin.calificaciones.alumnos');
+
+
 });
 
 require __DIR__.'/auth.php';

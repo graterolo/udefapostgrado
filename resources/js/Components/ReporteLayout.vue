@@ -19,18 +19,24 @@
         </div>
 
         <!-- Pie de Página y Bloque de Firmas Reutilizable -->
-        <div class="mt-16 pt-8 border-t border-gray-300 grid grid-cols-2 gap-12 text-center text-xs">
-            <div class="flex flex-col items-center">
+        <div class="mt-16 pt-8 border-t border-gray-300 grid text-center text-xs"
+            :class="props.mostrarDocente ? 'grid-cols-2 gap-12' : 'grid-cols-1 justify-items-center'">
+
+            <!-- Bloque de Firma del Docente Condicional -->
+            <div v-if="props.mostrarDocente" class="flex flex-col items-center">
                 <div class="w-48 border-b border-black mb-1 mt-10"></div>
                 <p class="font-bold uppercase">{{ docenteNombre }}</p>
                 <p class="text-gray-500">Firma del Docente</p>
             </div>
+
+            <!-- Bloque de Control de Estudios (Siempre se muestra) -->
             <div class="flex flex-col items-center">
                 <div class="w-48 border-b border-black mb-1 mt-10"></div>
                 <p class="font-bold uppercase">Control de Estudios</p>
                 <p class="text-gray-500">Firma y Sello </p>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -38,7 +44,8 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-    docenteNombre: { type: String, default: 'N/A' }
+    docenteNombre: { type: String, default: 'N/A' },
+    mostrarDocente: { type: Boolean, default: true }
 });
 
 const fechaActual = computed(() => new Date().toLocaleDateString('es-VE', {
