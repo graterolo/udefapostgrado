@@ -9,16 +9,16 @@
             </span>
             <div class="flex gap-2">
                 <Link
-                    :href="route('notas.index')"
+                    :href="route('calificaciones', { cedula: props.docente.cedula })"
                     class="px-4 py-2 bg-gray-500 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-gray-600 transition"
                 >
                     Volver
                 </Link>
                 <button
-                    @click="window.print()"
+                    @click="ejecutarImpresion"
                     class="px-4 py-2 bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-indigo-700 transition"
                 >
-                    Imprimir Control
+                    Imprimir Documento
                 </button>
             </div>
         </div>
@@ -79,6 +79,11 @@ const props = defineProps({
     infoseccion: Object,
     inscritos: Array
 });
+
+const ejecutarImpresion = () => {
+    window.print();
+};
+
 </script>
 
 <style scoped>

@@ -30,7 +30,7 @@
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Sección</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Modalidad</th>
                             <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Nombre de la Materia</th>
-                            <th v-if="$page.props.auth.user.tipo === 2" class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Reporte</th>
+                            <th colspan="2" v-if="$page.props.auth.user.tipo === 2" class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,9 +72,15 @@
                                 >
                                     Ver Acta
                                 </Link>
-
-
-
+                            </td>
+                            <td v-if="$page.props.auth.user.tipo === 2" class="border-t">
+                                <Link
+                                    v-if="$page.props.auth.user.tipo === 2"
+                                    :href="route('reportes.seccion.asistencia', { seccion: info.id })"
+                                    class="rounded-md bg-indigo-600 px-4 py-2 text-center text-sm text-white hover:bg-indigo-500"
+                                >
+                                    Asistencia
+                                </Link>
                             </td>
                         </tr>
                     </tbody>
